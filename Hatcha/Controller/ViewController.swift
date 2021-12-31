@@ -15,7 +15,5 @@ class ViewController: UIViewController
         print("github commit test")
         // Do any additional setup after loading the view.
     }
-
-
 }
 

@@ -8,22 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		1A78EC47277EF05B00AEED90 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC46277EF05B00AEED90 /* AppDelegate.swift */; };
-		1A78EC49277EF05B00AEED90 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC48277EF05B00AEED90 /* SceneDelegate.swift */; };
 		1A78EC4B277EF05B00AEED90 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC4A277EF05B00AEED90 /* ViewController.swift */; };
 		1A78EC4E277EF05B00AEED90 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A78EC4C277EF05B00AEED90 /* Main.storyboard */; };
 		1A78EC50277EF05E00AEED90 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A78EC4F277EF05E00AEED90 /* Assets.xcassets */; };
 		1A78EC53277EF05E00AEED90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A78EC51277EF05E00AEED90 /* LaunchScreen.storyboard */; };
+		A9A76320FFF9BE417DD91590 /* Pods_Hatcha.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F9D827C8A4C08A3E77CBD05 /* Pods_Hatcha.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1A78EC43277EF05B00AEED90 /* Hatcha.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hatcha.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A78EC46277EF05B00AEED90 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1A78EC48277EF05B00AEED90 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		1A78EC4A277EF05B00AEED90 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1A78EC4D277EF05B00AEED90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1A78EC4F277EF05E00AEED90 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A78EC52277EF05E00AEED90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A78EC54277EF05E00AEED90 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4F9D827C8A4C08A3E77CBD05 /* Pods_Hatcha.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hatcha.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D89A6CB4EFEEE4421680114 /* Pods-Hatcha.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hatcha.debug.xcconfig"; path = "Target Support Files/Pods-Hatcha/Pods-Hatcha.debug.xcconfig"; sourceTree = "<group>"; };
+		9056CEE26D506A69196764C6 /* Pods-Hatcha.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hatcha.release.xcconfig"; path = "Target Support Files/Pods-Hatcha/Pods-Hatcha.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +33,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A9A76320FFF9BE417DD91590 /* Pods_Hatcha.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +45,8 @@
 			children = (
 				1A78EC45277EF05B00AEED90 /* Hatcha */,
 				1A78EC44277EF05B00AEED90 /* Products */,
+				26EF07676E23852404C944C5 /* Pods */,
+				460BDC668B2B3929204BD8F8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,14 +62,54 @@
 			isa = PBXGroup;
 			children = (
 				1A78EC46277EF05B00AEED90 /* AppDelegate.swift */,
-				1A78EC48277EF05B00AEED90 /* SceneDelegate.swift */,
-				1A78EC4A277EF05B00AEED90 /* ViewController.swift */,
-				1A78EC4C277EF05B00AEED90 /* Main.storyboard */,
+				1A78EC5C277EFA0E00AEED90 /* Model */,
+				1A78EC5A277EF9F900AEED90 /* View */,
 				1A78EC4F277EF05E00AEED90 /* Assets.xcassets */,
 				1A78EC51277EF05E00AEED90 /* LaunchScreen.storyboard */,
 				1A78EC54277EF05E00AEED90 /* Info.plist */,
+				1A78EC5B277EFA0400AEED90 /* Controller */,
 			);
 			path = Hatcha;
+			sourceTree = "<group>";
+		};
+		1A78EC5A277EF9F900AEED90 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				1A78EC4C277EF05B00AEED90 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1A78EC5B277EFA0400AEED90 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				1A78EC4A277EF05B00AEED90 /* ViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		1A78EC5C277EFA0E00AEED90 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		26EF07676E23852404C944C5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				6D89A6CB4EFEEE4421680114 /* Pods-Hatcha.debug.xcconfig */,
+				9056CEE26D506A69196764C6 /* Pods-Hatcha.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		460BDC668B2B3929204BD8F8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4F9D827C8A4C08A3E77CBD05 /* Pods_Hatcha.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +119,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1A78EC57277EF05E00AEED90 /* Build configuration list for PBXNativeTarget "Hatcha" */;
 			buildPhases = (
+				4F190F42D9126297DFF8450A /* [CP] Check Pods Manifest.lock */,
 				1A78EC3F277EF05B00AEED90 /* Sources */,
 				1A78EC40277EF05B00AEED90 /* Frameworks */,
 				1A78EC41277EF05B00AEED90 /* Resources */,
+				328E16014CB5AECAFDBE3B5D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -133,6 +180,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		328E16014CB5AECAFDBE3B5D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Hatcha/Pods-Hatcha-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Hatcha/Pods-Hatcha-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Hatcha/Pods-Hatcha-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4F190F42D9126297DFF8450A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Hatcha-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1A78EC3F277EF05B00AEED90 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -140,7 +229,6 @@
 			files = (
 				1A78EC4B277EF05B00AEED90 /* ViewController.swift in Sources */,
 				1A78EC47277EF05B00AEED90 /* AppDelegate.swift in Sources */,
-				1A78EC49277EF05B00AEED90 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +372,7 @@
 		};
 		1A78EC58277EF05E00AEED90 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6D89A6CB4EFEEE4421680114 /* Pods-Hatcha.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -312,6 +401,7 @@
 		};
 		1A78EC59277EF05E00AEED90 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9056CEE26D506A69196764C6 /* Pods-Hatcha.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

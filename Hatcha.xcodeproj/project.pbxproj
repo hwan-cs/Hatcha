@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1A78EC47277EF05B00AEED90 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC46277EF05B00AEED90 /* AppDelegate.swift */; };
-		1A78EC4B277EF05B00AEED90 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC4A277EF05B00AEED90 /* ViewController.swift */; };
+		1A78EC4B277EF05B00AEED90 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC4A277EF05B00AEED90 /* MainViewController.swift */; };
 		1A78EC4E277EF05B00AEED90 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A78EC4C277EF05B00AEED90 /* Main.storyboard */; };
 		1A78EC50277EF05E00AEED90 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A78EC4F277EF05E00AEED90 /* Assets.xcassets */; };
 		1A78EC53277EF05E00AEED90 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A78EC51277EF05E00AEED90 /* LaunchScreen.storyboard */; };
@@ -18,7 +18,7 @@
 /* Begin PBXFileReference section */
 		1A78EC43277EF05B00AEED90 /* Hatcha.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hatcha.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A78EC46277EF05B00AEED90 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1A78EC4A277EF05B00AEED90 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1A78EC4A277EF05B00AEED90 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		1A78EC4D277EF05B00AEED90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1A78EC4F277EF05E00AEED90 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A78EC52277EF05E00AEED90 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -64,10 +64,10 @@
 				1A78EC46277EF05B00AEED90 /* AppDelegate.swift */,
 				1A78EC5C277EFA0E00AEED90 /* Model */,
 				1A78EC5A277EF9F900AEED90 /* View */,
+				1A78EC5B277EFA0400AEED90 /* Controller */,
 				1A78EC4F277EF05E00AEED90 /* Assets.xcassets */,
 				1A78EC51277EF05E00AEED90 /* LaunchScreen.storyboard */,
 				1A78EC54277EF05E00AEED90 /* Info.plist */,
-				1A78EC5B277EFA0400AEED90 /* Controller */,
 			);
 			path = Hatcha;
 			sourceTree = "<group>";
@@ -83,7 +83,7 @@
 		1A78EC5B277EFA0400AEED90 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				1A78EC4A277EF05B00AEED90 /* ViewController.swift */,
+				1A78EC4A277EF05B00AEED90 /* MainViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -227,7 +227,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A78EC4B277EF05B00AEED90 /* ViewController.swift in Sources */,
+				1A78EC4B277EF05B00AEED90 /* MainViewController.swift in Sources */,
 				1A78EC47277EF05B00AEED90 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -378,7 +378,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6N4G96MC26;
+				DEVELOPMENT_TEAM = 6DXT245L5T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Hatcha/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -407,7 +407,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 6N4G96MC26;
+				DEVELOPMENT_TEAM = 6DXT245L5T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Hatcha/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

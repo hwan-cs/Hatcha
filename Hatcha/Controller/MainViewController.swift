@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import SwipeCellKit
 
 class MainViewController: UIViewController
 {
@@ -85,6 +84,5 @@ extension MainViewController: UITableViewDataSource
     {
         return 1
     }
-
 }
 

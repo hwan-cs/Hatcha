@@ -20,10 +20,23 @@ class MainViewController: UIViewController
         tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
         tableView.delegate = self
         tableView.dataSource = self
+        
+        self.navigationController?.navigationBar.topItem?.title = "핫차"
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.view.backgroundColor = .clear
     }
-    override var preferredStatusBarStyle: UIStatusBarStyle
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
-          return .lightContent
+        if segue.identifier == K.subOrBusSegue
+        {
+            print("Segue to subOrBus")
+        }
+    }
+    override func viewWillAppear(_ animated: Bool)
+    {
+        self.navigationController?.navigationBar.barStyle = .black
     }
 }
 
@@ -66,7 +79,7 @@ extension MainViewController: UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return 2
+        return 10
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {

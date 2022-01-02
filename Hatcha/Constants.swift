@@ -8,8 +8,8 @@ struct K
 {
     static let cellIdentifier = "ReusableCell"
     static let cellNibName = "MyTableViewCell"
-//    static let registerSegue = "RegisterToChat"
-//    static let loginSegue = "LoginToChat"
+    static let subOrBusSegue = "subOrBus"
+    static let subwayVC = "subwayViewController"
     
 //    struct BrandColors
 //    {

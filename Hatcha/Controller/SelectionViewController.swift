@@ -50,9 +50,10 @@ class SelectionViewController: UIViewController
                    self.subway.stopAnimation(animationStyle: .expand, completion:
                    {
                        print("show next viewcontroller")
-                       let subwayVC = SubwayViewController()
-                       subwayVC.modalPresentationStyle = .fullScreen
-                       self.present(subwayVC, animated: true, completion: nil)
+                       let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                       let vc = storyboard.instantiateViewController(withIdentifier: K.subwayVC)
+                       vc.modalPresentationStyle = .fullScreen
+                       self.present(vc, animated: false, completion: nil)
                    })
                })
             })

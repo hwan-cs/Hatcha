@@ -204,17 +204,45 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundImg" translatesAutoresizingMaskIntoConstraints="NO" id="qqw-xI-CFo">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="역 이름:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZDh-y0-Oaz">
+                                <rect key="frame" x="20" y="143" width="63" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="TaP-kZ-9Gy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="W4v-Ez-uI4">
+                                <rect key="frame" x="86" y="143" width="308" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="z0Y-be-rah"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jwV-3H-oAR"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="qqw-xI-CFo" secondAttribute="bottom" id="3iZ-cN-RmX"/>
+                            <constraint firstItem="ZDh-y0-Oaz" firstAttribute="leading" secondItem="jwV-3H-oAR" secondAttribute="leading" constant="20" id="4B7-GE-b7Q"/>
+                            <constraint firstItem="jwV-3H-oAR" firstAttribute="trailing" secondItem="W4v-Ez-uI4" secondAttribute="trailing" constant="20" id="Iv4-wV-9Vg"/>
                             <constraint firstItem="qqw-xI-CFo" firstAttribute="top" secondItem="gIX-JE-fhy" secondAttribute="top" id="M7d-zO-wIs"/>
+                            <constraint firstItem="W4v-Ez-uI4" firstAttribute="top" secondItem="jwV-3H-oAR" secondAttribute="top" constant="99" id="OUg-x7-8Xf"/>
+                            <constraint firstItem="ZDh-y0-Oaz" firstAttribute="top" secondItem="jwV-3H-oAR" secondAttribute="top" constant="99" id="WUp-RX-T8S"/>
                             <constraint firstItem="qqw-xI-CFo" firstAttribute="trailing" secondItem="jwV-3H-oAR" secondAttribute="trailing" id="mJx-Jl-m65"/>
+                            <constraint firstItem="W4v-Ez-uI4" firstAttribute="leading" secondItem="ZDh-y0-Oaz" secondAttribute="trailing" constant="3" id="qOo-4G-VXD"/>
+                            <constraint firstItem="W4v-Ez-uI4" firstAttribute="leading" secondItem="ZDh-y0-Oaz" secondAttribute="trailing" constant="3" id="w4Z-FL-dmH"/>
                             <constraint firstItem="qqw-xI-CFo" firstAttribute="leading" secondItem="jwV-3H-oAR" secondAttribute="leading" id="wCL-Az-G8m"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="SxY-ii-upu"/>
+                    <connections>
+                        <outlet property="searchBar" destination="W4v-Ez-uI4" id="GyR-J8-yGb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pAc-Fx-mtN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

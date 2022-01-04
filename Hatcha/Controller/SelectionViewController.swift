@@ -30,6 +30,10 @@ class SelectionViewController: UIViewController
         bus.layer.borderWidth = 1
         bus.layer.borderColor = UIColor.white.cgColor
     }
+    override func viewWillAppear(_ animated: Bool)
+    {
+        self.navigationController?.navigationBar.barStyle = .default
+    }
     @IBAction func subwayButtonAction(_ sender: TransitionButton)
     {
         UIView.animate(withDuration: 0.15)
@@ -38,25 +42,33 @@ class SelectionViewController: UIViewController
         }
         completion:
         { finished in
-            self.busView.removeFromSuperview()
-            self.subway.startAnimation()
-            let qualityOfServiceClass = DispatchQoS.QoSClass.background
-            let backgroundQueue = DispatchQueue.global(qos: qualityOfServiceClass)
-            backgroundQueue.async(execute:
-            {
-               sleep(3) // 3: Do your networking task or background work here.
-               DispatchQueue.main.async(execute:
-               { () -> Void in
-                   self.subway.stopAnimation(animationStyle: .expand, completion:
-                   {
-                       print("show next viewcontroller")
-                       let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                       let vc = storyboard.instantiateViewController(withIdentifier: K.subwayVC)
-                       vc.modalPresentationStyle = .fullScreen
-                       self.present(vc, animated: false, completion: nil)
-                   })
-               })
-            })
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: K.subwayVC)
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: false, completion: nil)
+            
+            //comment out for debugging purposes
+//            self.busView.removeFromSuperview()
+//            self.subway.startAnimation()
+//            let qualityOfServiceClass = DispatchQoS.QoSClass.background
+//            let backgroundQueue = DispatchQueue.global(qos: qualityOfServiceClass)
+//            backgroundQueue.async(execute:
+//            {
+//               sleep(3) // 3: Do your networking task or background work here.
+//               DispatchQueue.main.async(execute:
+//               { () -> Void in
+//                   self.subway.stopAnimation(animationStyle: .expand, completion:
+//                   {
+//                       print("show next viewcontroller")
+//                       let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//                       let vc = storyboard.instantiateViewController(withIdentifier: K.subwayVC)
+//                       vc.modalPresentationStyle = .fullScreen
+//                       self.present(vc, animated: false, completion: nil)
+//                       self.navigationController?.popToRootViewController(animated: true)
+//                   })
+//               })
+//            })
         }
     }
     

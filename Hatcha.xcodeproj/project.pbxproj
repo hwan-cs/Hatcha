@@ -17,7 +17,8 @@
 		1A78EC642781B1DA00AEED90 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC632781B1DA00AEED90 /* Constants.swift */; };
 		1A78EC6627820C6D00AEED90 /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC6527820C6C00AEED90 /* SelectionViewController.swift */; };
 		1A78EC68278214CD00AEED90 /* SubwayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC67278214CD00AEED90 /* SubwayViewController.swift */; };
-		1ABD2AC12784A09800AF27C2 /* SubwayStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD2AC02784A09800AF27C2 /* SubwayStation.swift */; };
+		1ABD2AC12784A09800AF27C2 /* Subway.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD2AC02784A09800AF27C2 /* Subway.swift */; };
+		1ABD2AC32785FE0700AF27C2 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD2AC22785FE0600AF27C2 /* AlarmViewController.swift */; };
 		A9A76320FFF9BE417DD91590 /* Pods_Hatcha.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F9D827C8A4C08A3E77CBD05 /* Pods_Hatcha.framework */; };
 /* End PBXBuildFile section */
 
@@ -34,7 +35,8 @@
 		1A78EC632781B1DA00AEED90 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		1A78EC6527820C6C00AEED90 /* SelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
 		1A78EC67278214CD00AEED90 /* SubwayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayViewController.swift; sourceTree = "<group>"; };
-		1ABD2AC02784A09800AF27C2 /* SubwayStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayStation.swift; sourceTree = "<group>"; };
+		1ABD2AC02784A09800AF27C2 /* Subway.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subway.swift; sourceTree = "<group>"; };
+		1ABD2AC22785FE0600AF27C2 /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		4F9D827C8A4C08A3E77CBD05 /* Pods_Hatcha.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hatcha.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D89A6CB4EFEEE4421680114 /* Pods-Hatcha.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hatcha.debug.xcconfig"; path = "Target Support Files/Pods-Hatcha/Pods-Hatcha.debug.xcconfig"; sourceTree = "<group>"; };
 		9056CEE26D506A69196764C6 /* Pods-Hatcha.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hatcha.release.xcconfig"; path = "Target Support Files/Pods-Hatcha/Pods-Hatcha.release.xcconfig"; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 				1A78EC4A277EF05B00AEED90 /* MainViewController.swift */,
 				1A78EC6527820C6C00AEED90 /* SelectionViewController.swift */,
 				1A78EC67278214CD00AEED90 /* SubwayViewController.swift */,
+				1ABD2AC22785FE0600AF27C2 /* AlarmViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -108,7 +111,7 @@
 		1A78EC5C277EFA0E00AEED90 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				1ABD2AC02784A09800AF27C2 /* SubwayStation.swift */,
+				1ABD2AC02784A09800AF27C2 /* Subway.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -246,11 +249,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ABD2AC32785FE0700AF27C2 /* AlarmViewController.swift in Sources */,
 				1A78EC6627820C6D00AEED90 /* SelectionViewController.swift in Sources */,
 				1A78EC68278214CD00AEED90 /* SubwayViewController.swift in Sources */,
 				1A78EC642781B1DA00AEED90 /* Constants.swift in Sources */,
 				1A78EC4B277EF05B00AEED90 /* MainViewController.swift in Sources */,
-				1ABD2AC12784A09800AF27C2 /* SubwayStation.swift in Sources */,
+				1ABD2AC12784A09800AF27C2 /* Subway.swift in Sources */,
 				1A78EC47277EF05B00AEED90 /* AppDelegate.swift in Sources */,
 				1A78EC5F2781AC5000AEED90 /* MyTableViewCell.swift in Sources */,
 			);

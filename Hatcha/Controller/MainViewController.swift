@@ -22,10 +22,10 @@ class MainViewController: UIViewController
         tableView.dataSource = self
         
         self.navigationController?.navigationBar.topItem?.title = "핫차"
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.isTranslucent = true
-        navigationController?.view.backgroundColor = .clear
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = .clear
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {

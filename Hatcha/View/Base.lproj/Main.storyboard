@@ -98,6 +98,51 @@
             </objects>
             <point key="canvasLocation" x="1042.0289855072465" y="109.82142857142857"/>
         </scene>
+        <!--Alarm View Controller-->
+        <scene sceneID="L3y-zc-MTn">
+            <objects>
+                <viewController id="3AN-iQ-Yjd" customClass="AlarmViewController" customModule="Hatcha" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="85y-hC-PQP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundImg" translatesAutoresizingMaskIntoConstraints="NO" id="5Z8-7w-Qka">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="현재 역" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oTy-R9-uS5">
+                                <rect key="frame" x="20" y="138" width="374" height="57.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="48"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="도착 역" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qo8-4h-qBv">
+                                <rect key="frame" x="20" y="245.5" width="374" height="57.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="48"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ei4-rl-QhD"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ei4-rl-QhD" firstAttribute="trailing" secondItem="Qo8-4h-qBv" secondAttribute="trailing" constant="20" id="8FT-DI-iz1"/>
+                            <constraint firstItem="5Z8-7w-Qka" firstAttribute="top" secondItem="85y-hC-PQP" secondAttribute="top" id="Eah-MJ-Exv"/>
+                            <constraint firstAttribute="bottom" secondItem="5Z8-7w-Qka" secondAttribute="bottom" id="FXt-de-tBR"/>
+                            <constraint firstItem="oTy-R9-uS5" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" constant="20" id="NFd-gN-uiI"/>
+                            <constraint firstItem="Qo8-4h-qBv" firstAttribute="top" secondItem="oTy-R9-uS5" secondAttribute="bottom" constant="50" id="Wcq-sM-c91"/>
+                            <constraint firstItem="ei4-rl-QhD" firstAttribute="trailing" secondItem="oTy-R9-uS5" secondAttribute="trailing" constant="20" id="h9X-ue-tPB"/>
+                            <constraint firstItem="Qo8-4h-qBv" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" constant="20" id="msD-hd-yYX"/>
+                            <constraint firstItem="5Z8-7w-Qka" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" id="szm-9Y-Wjz"/>
+                            <constraint firstItem="oTy-R9-uS5" firstAttribute="top" secondItem="ei4-rl-QhD" secondAttribute="top" constant="50" id="utC-37-AgP"/>
+                            <constraint firstItem="5Z8-7w-Qka" firstAttribute="trailing" secondItem="ei4-rl-QhD" secondAttribute="trailing" id="y2L-9e-wFB"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="O6D-Uo-GZf"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dh5-h2-Vcm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1039.1304347826087" y="796.875"/>
+        </scene>
         <!--Selection View Controller-->
         <scene sceneID="qb1-2S-kvv">
             <objects>
@@ -320,9 +365,25 @@
             <point key="canvasLocation" x="2979.7101449275365" y="109.82142857142857"/>
         </scene>
         <!--Navigation Controller-->
+        <scene sceneID="z4O-QO-7tg">
+            <objects>
+                <navigationController storyboardIdentifier="AlarmViewController" id="WhF-Qu-zLe" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mLq-1I-4gz">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="3AN-iQ-Yjd" kind="relationship" relationship="rootViewController" id="kWQ-Ek-iDJ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OzB-ey-dcF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="132" y="797"/>
+        </scene>
+        <!--Navigation Controller-->
         <scene sceneID="AAS-om-UNk">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iR2-wx-3gh" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainViewController" automaticallyAdjustsScrollViewInsets="NO" id="iR2-wx-3gh" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="37t-ZH-1Ca">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -343,14 +404,6 @@
             <point key="canvasLocation" x="131.8840579710145" y="109.82142857142857"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="f3n-y1-YpC">
-            <size key="intrinsicContentSize" width="97" height="48"/>
-        </designable>
-        <designable name="ghT-Gt-y4R">
-            <size key="intrinsicContentSize" width="72.5" height="48"/>
-        </designable>
-    </designables>
     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>
         <image name="backgroundImg" width="1024" height="1366"/>

@@ -89,7 +89,16 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
     @objc func onSaveTap(_ sender: UIBarButtonItem)
     {
         //save alarm info in Realm database
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true)
+        {
+            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController")
+            let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first
+            {
+                window.rootViewController = vc
+                UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+            }
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?)

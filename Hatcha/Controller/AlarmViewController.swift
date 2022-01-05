@@ -11,9 +11,7 @@ import Speech
 class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
 {
     let audioEngine = AVAudioEngine()
-//    let speechRecognizer:SFSpeechRecognizer? =  SFSpeechRecognizer()
     let speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "ko"))
-//    let speechRecognizer = SFSpeechRecognizer()
     let request = SFSpeechAudioBufferRecognitionRequest()
     var task : SFSpeechRecognitionTask!
     var isStart: Bool = false

@@ -409,6 +409,8 @@
 				DEVELOPMENT_TEAM = 6DXT245L5T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Hatcha/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "안내방송을 들어야하기 때문에 마이크 권한이 필요합니다!";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "안내방송을 듣고 음성인식을 하기 때문에 권한이 필요합니다!";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -438,6 +440,8 @@
 				DEVELOPMENT_TEAM = 6DXT245L5T;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Hatcha/Info.plist;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "안내방송을 들어야하기 때문에 마이크 권한이 필요합니다!";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "안내방송을 듣고 음성인식을 하기 때문에 권한이 필요합니다!";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

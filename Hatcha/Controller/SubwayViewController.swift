@@ -11,8 +11,11 @@ import DropDown
 class SubwayViewController: UIViewController, UISearchBarDelegate
 {
     @IBOutlet var searchBar: UISearchBar!
+    @IBOutlet var selectLineView: UIView!
+    @IBOutlet var selectLineButton: UIButton!
     
     var dropDown = DropDown()
+    var lineDropDown = DropDown()
     let data = Array(Set(Subway.stations.map{$0.value}.flatMap{$0}))
     var filteredData: [String] = []
     override func viewDidLoad()
@@ -38,18 +41,44 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         searchBar.backgroundImage = UIImage()
     
         filteredData = data
+        DropDown.appearance().textFont = UIFont.systemFont(ofSize: 15, weight: .semibold)
         dropDown.anchorView = searchBar
         dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!-12)
         dropDown.backgroundColor = .white
-        dropDown.selectedTextColor = .blue
+        dropDown.selectedTextColor = .white
         dropDown.selectionBackgroundColor = UIColor.lightGray
         dropDown.direction = .bottom
         dropDown.cornerRadius = 10
+        
         dropDown.selectionAction =
         { [unowned self] (index: Int, item: String) in
             searchBar.text = item
             searchBar.endEditing(true)
+            selectLineButton.isUserInteractionEnabled = true
+            lineDropDown.dataSource = self.findKeyForValue(value: item, dictionary: Subway.stations)!
+            lineDropDown.show()
         }
+        
+        selectLineButton.layer.cornerRadius = 10
+        selectLineButton.isUserInteractionEnabled = false
+        
+        lineDropDown.anchorView = selectLineView
+        lineDropDown.bottomOffset = CGPoint(x: 0, y:(lineDropDown.anchorView?.plainView.bounds.height)!+2)
+        lineDropDown.backgroundColor = .white
+        lineDropDown.selectedTextColor = .white
+        lineDropDown.selectionBackgroundColor = UIColor.lightGray
+        lineDropDown.direction = .bottom
+        lineDropDown.cornerRadius = 10
+        
+        lineDropDown.selectionAction =
+        { [unowned self] (index: Int, item: String) in
+            selectLineButton.setTitle(item, for: .normal)
+        }
+    }
+    
+    @IBAction func selectLineButtonAction(_ sender: UIButton)
+    {
+        lineDropDown.show()
     }
     
     @objc func onCancelTap(_ sender: UIBarButtonItem)
@@ -62,40 +91,31 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         self.searchBar.endEditing(true)
     }
     
+    func findKeyForValue(value: String, dictionary: [String: [String]]) -> [String]?
+    {
+        var result = [String]()
+        for (key, array) in dictionary
+        {
+            if (array.contains(value))
+            {
+                result.append(key)
+            }
+        }
+        return result
+    }
+    
     //MARK: - SearchBar delegate methods
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
     {
+        if searchText == ""
+        {
+            selectLineButton.isUserInteractionEnabled = false
+            selectLineButton.setTitle("출발 역을 선택하세요...", for: .normal)
+        }
         filteredData = searchText.isEmpty ? data : data.filter({ (dat) -> Bool in
             dat.range(of: searchText, options: .caseInsensitive) != nil
         })
         dropDown.dataSource = filteredData
         dropDown.show()
     }
-
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar)
-    {
-        searchBar.setShowsCancelButton(true, animated: true)
-        for ob: UIView in ((searchBar.subviews[0] )).subviews
-        {
-            if let z = ob as? UIButton
-            {
-                let btn: UIButton = z
-                btn.setTitleColor(UIColor.white, for: .normal)
-            }
-        }
-    }
-
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar)
-    {
-        searchBar.showsCancelButton = false
-    }
-
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar)
-    {
-        searchBar.resignFirstResponder()
-        searchBar.text = ""
-        filteredData = data
-        dropDown.hide()
-    }
-
 }

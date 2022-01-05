@@ -204,10 +204,19 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundImg" translatesAutoresizingMaskIntoConstraints="NO" id="qqw-xI-CFo">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="역 이름:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZDh-y0-Oaz">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="출발 역:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZDh-y0-Oaz">
                                 <rect key="frame" x="20" y="143" width="63" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="TaP-kZ-9Gy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="노선:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vkW-Q2-VPG">
+                                <rect key="frame" x="20" y="237" width="40.5" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="Drt-gT-vL3"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="20"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -223,25 +232,58 @@
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rAM-G5-f1P">
+                                <rect key="frame" x="68.5" y="237" width="200" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IuK-6f-RZJ">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="44"/>
+                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="출발 역을 선택하세요...">
+                                            <fontDescription key="titleFontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="15"/>
+                                            <color key="baseForegroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="selectLineButtonAction:" destination="8jk-jK-QDN" eventType="touchUpInside" id="8Gl-TD-UuS"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="IuK-6f-RZJ" secondAttribute="bottom" id="8hS-iR-rvH"/>
+                                    <constraint firstAttribute="trailing" secondItem="IuK-6f-RZJ" secondAttribute="trailing" id="8ij-m6-R8P"/>
+                                    <constraint firstItem="IuK-6f-RZJ" firstAttribute="leading" secondItem="rAM-G5-f1P" secondAttribute="leading" id="KOU-C9-LEp"/>
+                                    <constraint firstAttribute="height" constant="44" id="Oi7-Py-rXS"/>
+                                    <constraint firstItem="IuK-6f-RZJ" firstAttribute="top" secondItem="rAM-G5-f1P" secondAttribute="top" id="Zbg-3x-OFx"/>
+                                    <constraint firstAttribute="width" constant="200" id="eCd-dP-VGW"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jwV-3H-oAR"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="vkW-Q2-VPG" firstAttribute="leading" secondItem="jwV-3H-oAR" secondAttribute="leading" constant="20" id="0GE-7o-qWk"/>
                             <constraint firstAttribute="bottom" secondItem="qqw-xI-CFo" secondAttribute="bottom" id="3iZ-cN-RmX"/>
                             <constraint firstItem="ZDh-y0-Oaz" firstAttribute="leading" secondItem="jwV-3H-oAR" secondAttribute="leading" constant="20" id="4B7-GE-b7Q"/>
+                            <constraint firstItem="rAM-G5-f1P" firstAttribute="top" secondItem="ZDh-y0-Oaz" secondAttribute="bottom" constant="50" id="8w5-md-K2R"/>
+                            <constraint firstItem="vkW-Q2-VPG" firstAttribute="top" secondItem="ZDh-y0-Oaz" secondAttribute="bottom" constant="50" id="ANg-lo-9MV"/>
                             <constraint firstItem="jwV-3H-oAR" firstAttribute="trailing" secondItem="W4v-Ez-uI4" secondAttribute="trailing" constant="20" id="Iv4-wV-9Vg"/>
                             <constraint firstItem="qqw-xI-CFo" firstAttribute="top" secondItem="gIX-JE-fhy" secondAttribute="top" id="M7d-zO-wIs"/>
                             <constraint firstItem="W4v-Ez-uI4" firstAttribute="top" secondItem="jwV-3H-oAR" secondAttribute="top" constant="99" id="OUg-x7-8Xf"/>
+                            <constraint firstItem="rAM-G5-f1P" firstAttribute="leading" secondItem="vkW-Q2-VPG" secondAttribute="trailing" constant="8" id="ShE-ad-qa8"/>
                             <constraint firstItem="ZDh-y0-Oaz" firstAttribute="top" secondItem="jwV-3H-oAR" secondAttribute="top" constant="99" id="WUp-RX-T8S"/>
                             <constraint firstItem="qqw-xI-CFo" firstAttribute="trailing" secondItem="jwV-3H-oAR" secondAttribute="trailing" id="mJx-Jl-m65"/>
                             <constraint firstItem="W4v-Ez-uI4" firstAttribute="leading" secondItem="ZDh-y0-Oaz" secondAttribute="trailing" constant="3" id="qOo-4G-VXD"/>
                             <constraint firstItem="W4v-Ez-uI4" firstAttribute="leading" secondItem="ZDh-y0-Oaz" secondAttribute="trailing" constant="3" id="w4Z-FL-dmH"/>
+                            <constraint firstItem="rAM-G5-f1P" firstAttribute="leading" secondItem="vkW-Q2-VPG" secondAttribute="trailing" constant="8" id="w9z-tc-Udc"/>
                             <constraint firstItem="qqw-xI-CFo" firstAttribute="leading" secondItem="jwV-3H-oAR" secondAttribute="leading" id="wCL-Az-G8m"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="SxY-ii-upu"/>
                     <connections>
                         <outlet property="searchBar" destination="W4v-Ez-uI4" id="GyR-J8-yGb"/>
+                        <outlet property="selectLineButton" destination="IuK-6f-RZJ" id="psA-Yd-Pjx"/>
+                        <outlet property="selectLineView" destination="rAM-G5-f1P" id="mni-Wa-Gct"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pAc-Fx-mtN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

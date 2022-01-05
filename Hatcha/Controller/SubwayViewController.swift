@@ -13,6 +13,7 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
     @IBOutlet var searchBar: UISearchBar!
     @IBOutlet var selectLineView: UIView!
     @IBOutlet var selectLineButton: UIButton!
+    @IBOutlet var previousStationAlarmView: UIView!
     
     var dropDown = DropDown()
     var lineDropDown = DropDown()
@@ -21,16 +22,13 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        let backgroundFrame = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 60))
-        backgroundFrame.backgroundColor = .white
-        view.addSubview(backgroundFrame)
-        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 60, width: view.frame.size.width, height: 44))
+        let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         navBar.isTranslucent = false
         navBar.barTintColor = .white
         view.addSubview(navBar)
         let navItem = UINavigationItem(title: "")
         let cancelItem = UIBarButtonItem(title: "취소", style: .plain, target: self, action: #selector(onCancelTap(_:)))
-        let saveItem = UIBarButtonItem(title: "저장", style: .plain, target: self, action: nil)
+        let saveItem = UIBarButtonItem(title: "저장", style: .plain, target: self, action: #selector(onSaveTap(_:)))
         navItem.rightBarButtonItem = saveItem
         navItem.leftBarButtonItem = cancelItem
         navBar.setItems([navItem], animated: false)
@@ -74,6 +72,8 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         { [unowned self] (index: Int, item: String) in
             selectLineButton.setTitle(item, for: .normal)
         }
+        
+        previousStationAlarmView.layer.cornerRadius = 16
     }
     
     @IBAction func selectLineButtonAction(_ sender: UIButton)
@@ -83,6 +83,12 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
     
     @objc func onCancelTap(_ sender: UIBarButtonItem)
     {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @objc func onSaveTap(_ sender: UIBarButtonItem)
+    {
+        //save alarm info in Realm database
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -103,14 +109,14 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         }
         return result
     }
-    
+
     //MARK: - SearchBar delegate methods
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
     {
         if searchText == ""
         {
             selectLineButton.isUserInteractionEnabled = false
-            selectLineButton.setTitle("출발 역을 선택하세요...", for: .normal)
+            selectLineButton.setTitle("도착 역을 선택하세요...", for: .normal)
         }
         filteredData = searchText.isEmpty ? data : data.filter({ (dat) -> Bool in
             dat.range(of: searchText, options: .caseInsensitive) != nil

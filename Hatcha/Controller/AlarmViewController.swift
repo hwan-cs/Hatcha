@@ -11,7 +11,7 @@ import Speech
 class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
 {
     let audioEngine = AVAudioEngine()
-    let speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "ko"))
+    let speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "ko"))!
     let request = SFSpeechAudioBufferRecognitionRequest()
     var task : SFSpeechRecognitionTask!
     var isStart: Bool = false
@@ -26,10 +26,34 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
         
+        speechRecognizer.delegate = self
         requestPermission()
-        startSpeechRecognition()
+        let audioURL = Bundle.main.url(forResource: "audiotest", withExtension: "mp3")
+
+        let recognizer = SFSpeechRecognizer(locale: Locale(identifier: "ko-KR"))
+        let request = SFSpeechURLRecognitionRequest(url: audioURL!)
+
+        request.shouldReportPartialResults = true
+
+        if (recognizer?.isAvailable)! {
+
+            recognizer?.recognitionTask(with: request) { result, error in
+                guard error == nil else { print("Error: \(error!)"); return }
+                guard let result = result else { print("No result!"); return }
+
+                print(result.bestTranscription.formattedString)
+            }
+        } else {
+            print("Device doesn't support speech recognition")
+        }
+        
+//        startSpeechRecognition()
     }
     
+    override func viewWillAppear(_ animated: Bool)
+    {
+        self.navigationController?.navigationBar.barStyle = .black
+    }
     @IBAction func cancelAlarmTapped(_ sender: UIButton)
     {
         let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MainViewController")
@@ -73,6 +97,8 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
         let node = audioEngine.inputNode
         let recordingFormat = node.outputFormat(forBus: 0)
         
+        request.shouldReportPartialResults = true
+        
         node.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat)
         { buffer, _ in
             self.request.append(buffer)
@@ -100,7 +126,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
             self.alertView("현재 음성인식 사용이 불가능합니다")
         }
         
-        task = speechRecognizer?.recognitionTask(with: request, resultHandler:
+        task = speechRecognizer.recognitionTask(with: request, resultHandler:
         { response, error in
             guard let response = response
             else

@@ -15,7 +15,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
 {
     let audioEngine = AVAudioEngine()
     let speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "ko"))!
-    let request = SFSpeechAudioBufferRecognitionRequest()
+    var request = SFSpeechAudioBufferRecognitionRequest()
     var task : SFSpeechRecognitionTask!
     var isStart: Bool = false
     
@@ -41,46 +41,59 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
         
         do
         {
-            let audioFile = try AVAudioFile(forReading: audioURL!)
-            let readBuffer = AVAudioPCMBuffer.init(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
-            try audioFile.read(into: readBuffer)
-            let normalizedBuffer = readBuffer.normalize()!
-            audioEngine.attach(audioFilePlayer)
-            audioEngine.connect(audioFilePlayer, to: audioEngine.outputNode, format: normalizedBuffer.format)
+//            let audioFile = try AVAudioFile(forReading: audioURL!)
             
-            //audioEngine.inputNode.outputFormat(forBus: 0)
+            // Configure the audio session for the app.
+            let audioSession = AVAudioSession.sharedInstance()
+            try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+            let inputNode = audioEngine.inputNode
+            
+            let recordingFormat = inputNode.outputFormat(forBus: 0)
+            inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat)
+            { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+                self.request.append(buffer.normalize()!)
+            }
+            audioEngine.prepare()
+            try audioEngine.start()
             
             //MARK: - Uncomment to play normalized audio
             /*
+            let readBuffer = AVAudioPCMBuffer.init(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
+            try audioFile.read(into: readBuffer)
+            audioEngine.attach(audioFilePlayer)
+            audioEngine.connect(audioFilePlayer, to: audioEngine.outputNode, format: normalizedBuffer.format)
+             
             try audioEngine.start()
             audioFilePlayer.play()
             audioFilePlayer.scheduleBuffer(normalizedBuffer, completionHandler: nil)
              */
-            
-            request.append(normalizedBuffer)
-            //request.endAudio()
-            request.shouldReportPartialResults = true
 
-            if (speechRecognizer.isAvailable)
-            {
-                speechRecognizer.recognitionTask(with: request)
-                { result, error in
-                    guard error == nil else { print("Error: \(error!)"); return }
-                    guard let result = result else { print("No result!"); return }
-                    print(result.bestTranscription.formattedString)
+            Timer.scheduledTimer(withTimeInterval: 15, repeats: true)
+            { timer in
+                self.request.shouldReportPartialResults = true
+                
+                if (self.speechRecognizer.isAvailable)
+                {
+                    self.speechRecognizer.recognitionTask(with: self.request, resultHandler:
+                    { result, error in
+                        guard error == nil else { print("Error: \(error!)"); return }
+                        guard let result = result else { print("No result!"); return }
+                        self.speechLabel.text = result.bestTranscription.formattedString
+                    })
                 }
+                else
+                {
+                    print("Device doesn't support speech recognition")
+                }
+                print("done")
+                self.request = SFSpeechAudioBufferRecognitionRequest()
             }
-            else
-            {
-                print("Device doesn't support speech recognition")
-            }
-            print("done")
         }
         catch let error
         {
             print(error.localizedDescription)
         }
-       // startSpeechRecognition()
     }
     
     override func viewWillAppear(_ animated: Bool)

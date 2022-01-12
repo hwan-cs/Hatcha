@@ -48,7 +48,9 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
         {
             // Configure the audio session for the app.
             let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
+            
+            try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.allowBluetoothA2DP, .mixWithOthers])
+//            try audioSession.setPreferredInput()
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
             let inputNode = audioEngine.inputNode
             

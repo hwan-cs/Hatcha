@@ -91,9 +91,11 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         //save alarm info in Realm database
         self.dismiss(animated: true)
         {
-            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController")
+            
+            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController") as! AlarmViewController
+            vc.lineNo = self.lineDropDown.selectedItem
             let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first
+            if let window = scene?.windows.first
             {
                 window.rootViewController = vc
                 UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)

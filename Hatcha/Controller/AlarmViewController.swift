@@ -25,6 +25,12 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
     var audioFile: AVAudioFile!
     
     @IBOutlet var speechLabel: UILabel!
+    @IBOutlet var currentStationLabel: UILabel!
+    
+    let data = Array(Set(Subway.stations.map{$0.value}.flatMap{$0}))
+    var lineNo: String?
+    var SRResult = [String]()
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -34,15 +40,12 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
         
-        print("????")
+        currentStationLabel.adjustsFontSizeToFitWidth = true
         speechRecognizer.delegate = self
         requestPermission()
-        let audioURL = Bundle.main.url(forResource: "audiotest", withExtension: "mp3")
         
         do
         {
-//            let audioFile = try AVAudioFile(forReading: audioURL!)
-            
             // Configure the audio session for the app.
             let audioSession = AVAudioSession.sharedInstance()
             try audioSession.setCategory(.record, mode: .measurement, options: .duckOthers)
@@ -69,25 +72,12 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
             audioFilePlayer.scheduleBuffer(normalizedBuffer, completionHandler: nil)
              */
 
-            Timer.scheduledTimer(withTimeInterval: 15, repeats: true)
-            { timer in
-                self.request.shouldReportPartialResults = true
-                
-                if (self.speechRecognizer.isAvailable)
+            startSpeechRecognition
+            { success in
+                if success == true
                 {
-                    self.speechRecognizer.recognitionTask(with: self.request, resultHandler:
-                    { result, error in
-                        guard error == nil else { print("Error: \(error!)"); return }
-                        guard let result = result else { print("No result!"); return }
-                        self.speechLabel.text = result.bestTranscription.formattedString
-                    })
+                    self.determineStation(self.speechLabel.text!)
                 }
-                else
-                {
-                    print("Device doesn't support speech recognition")
-                }
-                print("done")
-                self.request = SFSpeechAudioBufferRecognitionRequest()
             }
         }
         catch let error
@@ -98,8 +88,15 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
     
     override func viewWillAppear(_ animated: Bool)
     {
-        self.navigationController?.navigationBar.barStyle = .black
+
     }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle
+    {
+        return .lightContent
+    }
+    
+    
     @IBAction func cancelAlarmTapped(_ sender: UIButton)
     {
         let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MainViewController")
@@ -138,60 +135,47 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
         }
     }
     
-    func startSpeechRecognition()
+    func determineStation(_ transcription: String) -> String
     {
-        let node = audioEngine.inputNode
-        let recordingFormat = node.outputFormat(forBus: 0)
-        
-        request.shouldReportPartialResults = true
-        
-        node.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat)
-        { buffer, _ in
-            self.request.append(buffer)
-        }
-        
-        audioEngine.prepare()
-        do
+        let stationsForLineNo = Subway.stations[self.lineNo!]!
+        for station in stationsForLineNo
         {
-            try audioEngine.start()
+            if transcription.filter({!$0.isWhitespace}).contains(station) && SRResult.isEmpty
+            {
+                SRResult.append(station)
+            }
         }
-        catch let error
+        if !SRResult.isEmpty
         {
-            alertView("Cannot start audio engine!")
+            currentStationLabel.text = "이번 역: \(SRResult[0])"
+            print(SRResult)
         }
-        
-        guard let mySpeechRecognition = SFSpeechRecognizer()
-        else
-        {
-            self.alertView("음성인식이 허용되지 않았습니다")
-            return
-        }
-        
-        if !mySpeechRecognition.isAvailable
-        {
-            self.alertView("현재 음성인식 사용이 불가능합니다")
-        }
-        
-        task = speechRecognizer.recognitionTask(with: request, resultHandler:
-        { response, error in
-            guard let response = response
+        return " "
+    }
+    
+    func startSpeechRecognition(completion: @escaping (_ success: Bool) -> Void)
+    {
+        Timer.scheduledTimer(withTimeInterval: 15, repeats: true)
+        { timer in
+            self.request.shouldReportPartialResults = true
+            self.SRResult = [String]()
+            if (self.speechRecognizer.isAvailable)
+            {
+                self.speechRecognizer.recognitionTask(with: self.request, resultHandler:
+                { result, error in
+                    guard error == nil else { print("Error: \(error!)"); return }
+                    guard let result = result else { print("No result!"); return }
+                    self.speechLabel.text = result.bestTranscription.formattedString
+                    completion(true)
+                })
+            }
             else
             {
-                if error != nil
-                {
-                    self.alertView(error?.localizedDescription as! String)
-                }
-                else
-                {
-                    self.alertView("Problem in receiving response")
-                }
-                return
+                print("Device doesn't support speech recognition")
             }
-            
-            let message = response.bestTranscription.formattedString
-            self.speechLabel.text = message
-            print(message)
-        })
+            print("done")
+            self.request = SFSpeechAudioBufferRecognitionRequest()
+        }
     }
     
     func cancelSpeechRecognition()

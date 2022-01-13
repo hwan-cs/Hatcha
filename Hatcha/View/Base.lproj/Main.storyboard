@@ -109,7 +109,7 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundImg" translatesAutoresizingMaskIntoConstraints="NO" id="5Z8-7w-Qka">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이번 역:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oTy-R9-uS5">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="이번 역:---" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oTy-R9-uS5">
                                 <rect key="frame" x="20" y="94" width="374" height="58"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="48"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -147,6 +147,7 @@
                     <navigationItem key="navigationItem" id="O6D-Uo-GZf"/>
                     <connections>
                         <outlet property="currentStationLabel" destination="oTy-R9-uS5" id="OgX-tU-FmS"/>
+                        <outlet property="destinationStationLabel" destination="Qo8-4h-qBv" id="LhR-Qb-SHc"/>
                         <outlet property="speechLabel" destination="0ff-xq-6Of" id="8zG-gD-baw"/>
                     </connections>
                 </viewController>

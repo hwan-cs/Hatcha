@@ -43,7 +43,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
         
-        destinationStationLabel.text = "도착 역: \(destination!)"
+//        destinationStationLabel.text = "도착 역: \(destination!)"
         currentStationLabel.adjustsFontSizeToFitWidth = true
         speechRecognizer.delegate = self
         requestPermission()
@@ -51,36 +51,44 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
         let audioURL = Bundle.main.url(forResource: "test2", withExtension: "m4a")
         do
         {
-//            let audioFile = try AVAudioFile(forReading: audioURL!)
+            let audioFile = try AVAudioFile(forReading: audioURL!)
             
             // Configure the audio session for the app.
-            let audioSession = AVAudioSession.sharedInstance()
-            try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.allowBluetoothA2DP, .mixWithOthers])
-            
-            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-            let inputNode = audioEngine.inputNode
-            
-            let recordingFormat = inputNode.outputFormat(forBus: 0)
-            inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat)
-            { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-                self.request.append(buffer.normalize()!)
-            }
-            audioEngine.prepare()
-            try audioEngine.start()
+//            let audioSession = AVAudioSession.sharedInstance()
+//            try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.allowBluetoothA2DP, .mixWithOthers])
+//
+//            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+//            let inputNode = audioEngine.inputNode
+//
+//            let recordingFormat = inputNode.outputFormat(forBus: 0)
+//            inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat)
+//            { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+//                self.request.append(buffer.normalize()!)
+//
+//            }
+//            audioEngine.prepare()
+//            try audioEngine.start()
             
             //MARK: - Uncomment to play normalized audio
-            
-            /*
-            let readBuffer = AVAudioPCMBuffer.init(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
+            var readBuffer = AVAudioPCMBuffer.init(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
             try audioFile.read(into: readBuffer)
-            let normalizedBuffer = readBuffer.normalize()!
+            var normalizedBuffer = readBuffer.normalize()!
+            
+            let peak = readBuffer.peak()?.amplitude.magnitude
+            print(peak)
+            let avgMag = avgMagnitude(buffer: readBuffer)
+            for i in 0..<Int(normalizedBuffer.frameCapacity)
+            {
+                normalizedBuffer.floatChannelData?.pointee[i] = (normalizedBuffer.floatChannelData?.pointee[i])! * 500.0
+            }
+
             audioEngine.attach(audioFilePlayer)
             audioEngine.connect(audioFilePlayer, to: audioEngine.outputNode, format: normalizedBuffer.format)
 
             try audioEngine.start()
-            audioFilePlayer.play()
-            audioFilePlayer.scheduleBuffer(normalizedBuffer, completionHandler: nil)
-            */
+//            audioFilePlayer.play()
+//            audioFilePlayer.scheduleBuffer(normalizedBuffer, completionHandler: nil)
+            self.request.append(normalizedBuffer)
                     
             startSpeechRecognition()
         }
@@ -99,7 +107,15 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
     {
         return .lightContent
     }
-    
+    func avgMagnitude(buffer: AVAudioPCMBuffer) -> Float
+    {
+        var total: Float = 0.0
+        for i in 0..<Int(buffer.frameCapacity)
+        {
+            total += (buffer.floatChannelData?.pointee[i].magnitude)!
+        }
+        return total/Float(buffer.frameCapacity)
+    }
     
     @IBAction func cancelAlarmTapped(_ sender: UIButton)
     {
@@ -167,7 +183,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
                 guard error == nil else { print("Error: \(error!)"); return }
                 guard let result = result else { print("No result!"); return }
                 self.speechLabel.text = result.bestTranscription.formattedString
-                self.determineStation(self.speechLabel.text!)
+//                self.determineStation(self.speechLabel.text!)
             })
         }
         else

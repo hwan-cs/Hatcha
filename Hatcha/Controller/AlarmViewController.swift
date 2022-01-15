@@ -48,16 +48,16 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
         speechRecognizer.delegate = self
         requestPermission()
         
-        let audioURL = Bundle.main.url(forResource: "test2", withExtension: "m4a")
+        let audioURL = Bundle.main.url(forResource: "audiotest", withExtension: "m4a")
         do
         {
             let audioFile = try AVAudioFile(forReading: audioURL!)
-            
             // Configure the audio session for the app.
-//            let audioSession = AVAudioSession.sharedInstance()
-//            try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.allowBluetoothA2DP, .mixWithOthers])
-//
-//            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+            let audioSession = AVAudioSession.sharedInstance()
+            try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.allowBluetoothA2DP, .mixWithOthers])
+
+            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+            //try audioSession.setPreferredSampleRate(44100.0)
 //            let inputNode = audioEngine.inputNode
 //
 //            let recordingFormat = inputNode.outputFormat(forBus: 0)
@@ -70,26 +70,46 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
 //            try audioEngine.start()
             
             //MARK: - Uncomment to play normalized audio
-            var readBuffer = AVAudioPCMBuffer.init(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
+            let readBuffer = AVAudioPCMBuffer.init(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
             try audioFile.read(into: readBuffer)
             var normalizedBuffer = readBuffer.normalize()!
             
             let peak = readBuffer.peak()?.amplitude.magnitude
             print(peak)
             let avgMag = avgMagnitude(buffer: readBuffer)
+            print(avgMag)
             for i in 0..<Int(normalizedBuffer.frameCapacity)
             {
-                normalizedBuffer.floatChannelData?.pointee[i] = (normalizedBuffer.floatChannelData?.pointee[i])! * 500.0
+                normalizedBuffer.floatChannelData?.pointee[i] = (normalizedBuffer.floatChannelData?.pointee[i])! * 100.0
+//                print((normalizedBuffer.floatChannelData?.pointee[i])!)
             }
+            let equalizer = AVAudioUnitEQ(numberOfBands: 2)
+//
+            equalizer.bands[0].filterType = .lowPass
+            equalizer.bands[0].frequency = 1000
+            equalizer.bands[0].bypass = false
+
+            equalizer.bands[1].filterType = .highPass
+            equalizer.bands[1].frequency = 200
+            equalizer.bands[1].bypass = false
+            
+            audioEngine.attach(equalizer)
 
             audioEngine.attach(audioFilePlayer)
-            audioEngine.connect(audioFilePlayer, to: audioEngine.outputNode, format: normalizedBuffer.format)
-
+            audioEngine.connect(audioFilePlayer, to: equalizer, format: normalizedBuffer.format)
+            audioEngine.connect(equalizer, to: audioEngine.outputNode, format: normalizedBuffer.format)
+            
+            audioFilePlayer.scheduleBuffer(normalizedBuffer, completionHandler: nil)
+            
+            audioFilePlayer.installTap(onBus: 0, bufferSize: 1024, format: nil)
+            { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+                self.request.append(buffer)
+//                print(buffer)
+            }
             try audioEngine.start()
+
 //            audioFilePlayer.play()
-//            audioFilePlayer.scheduleBuffer(normalizedBuffer, completionHandler: nil)
-            self.request.append(normalizedBuffer)
-                    
+            
             startSpeechRecognition()
         }
         catch let error
@@ -176,6 +196,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
     func startSpeechRecognition()
     {
         self.request.shouldReportPartialResults = true
+        self.speechRecognizer.defaultTaskHint = .dictation
         if (self.speechRecognizer.isAvailable)
         {
             self.speechRecognizer.recognitionTask(with: self.request, resultHandler:

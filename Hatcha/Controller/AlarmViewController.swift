@@ -58,59 +58,54 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
 
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
             //try audioSession.setPreferredSampleRate(44100.0)
-//            let inputNode = audioEngine.inputNode
-//
-//            let recordingFormat = inputNode.outputFormat(forBus: 0)
-//            inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat)
-//            { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-//                self.request.append(buffer.normalize()!)
-//
-//            }
-//            audioEngine.prepare()
-//            try audioEngine.start()
+            let inputNode = audioEngine.inputNode
+
             
-            //MARK: - Uncomment to play normalized audio
-            let readBuffer = AVAudioPCMBuffer.init(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
-            try audioFile.read(into: readBuffer)
-            var normalizedBuffer = readBuffer.normalize()!
-            
-            let peak = readBuffer.peak()?.amplitude.magnitude
-            print(peak)
-            let avgMag = avgMagnitude(buffer: readBuffer)
-            print(avgMag)
-            for i in 0..<Int(normalizedBuffer.frameCapacity)
-            {
-                normalizedBuffer.floatChannelData?.pointee[i] = (normalizedBuffer.floatChannelData?.pointee[i])! * 100.0
-//                print((normalizedBuffer.floatChannelData?.pointee[i])!)
-            }
             let equalizer = AVAudioUnitEQ(numberOfBands: 2)
-//
+
             equalizer.bands[0].filterType = .lowPass
-            equalizer.bands[0].frequency = 1000
+            equalizer.bands[0].frequency = 500
             equalizer.bands[0].bypass = false
 
+            //MARK: - Highpass filter
             equalizer.bands[1].filterType = .highPass
-            equalizer.bands[1].frequency = 200
+            equalizer.bands[1].frequency = 70
             equalizer.bands[1].bypass = false
-            
+
             audioEngine.attach(equalizer)
-
             audioEngine.attach(audioFilePlayer)
-            audioEngine.connect(audioFilePlayer, to: equalizer, format: normalizedBuffer.format)
-            audioEngine.connect(equalizer, to: audioEngine.outputNode, format: normalizedBuffer.format)
+            audioEngine.connect(audioFilePlayer, to: equalizer, format: inputNode.outputFormat(forBus: 0))
+            audioEngine.connect(equalizer, to: audioEngine.outputNode, format: inputNode.outputFormat(forBus: 0))
             
-            audioFilePlayer.scheduleBuffer(normalizedBuffer, completionHandler: nil)
-            
-            audioFilePlayer.installTap(onBus: 0, bufferSize: 1024, format: nil)
+            let recordingFormat = inputNode.outputFormat(forBus: 0)
+            inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat)
             { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-                self.request.append(buffer)
-//                print(buffer)
+                for i in 0..<Int(buffer.frameCapacity)
+                {
+                    buffer.floatChannelData?.pointee[i] = (buffer.floatChannelData?.pointee[i])! * 2000.0
+                }
+                self.audioFilePlayer.scheduleBuffer(buffer, completionHandler: nil)
             }
+            audioEngine.prepare()
             try audioEngine.start()
-
-//            audioFilePlayer.play()
             
-            startSpeechRecognition()
+            //MARK: - Uncomment to play normalized audio
+//            let readBuffer = AVAudioPCMBuffer.init(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
+//            try audioFile.read(into: readBuffer)
+//
+//            for i in 0..<Int(readBuffer.frameCapacity)
+//            {
+//                readBuffer.floatChannelData?.pointee[i] = (readBuffer.floatChannelData?.pointee[i])! * 100.0
+//            }
+            
+            Timer.scheduledTimer(withTimeInterval: 15, repeats: true)
+            { timer in
+                self.audioFilePlayer.installTap(onBus: 0, bufferSize: 1024, format: nil)
+                { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+                    self.request.append(buffer)
+                }
+                self.startSpeechRecognition()
+            }
         }
         catch let error
         {
@@ -204,6 +199,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
                 guard error == nil else { print("Error: \(error!)"); return }
                 guard let result = result else { print("No result!"); return }
                 self.speechLabel.text = result.bestTranscription.formattedString
+                print(result.bestTranscription.formattedString)
 //                self.determineStation(self.speechLabel.text!)
             })
         }

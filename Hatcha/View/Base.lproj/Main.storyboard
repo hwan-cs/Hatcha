@@ -13,7 +13,7 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="Hatcha" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundImg" translatesAutoresizingMaskIntoConstraints="NO" id="lwp-1G-MNg">
@@ -121,22 +121,45 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ff-xq-6Of">
-                                <rect key="frame" x="26" y="318" width="359" height="544"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ff-xq-6Of">
+                                <rect key="frame" x="26" y="318" width="359" height="402"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="402" id="01R-tn-gT3"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yn6-t2-eOq">
+                                <rect key="frame" x="20" y="740" width="374" height="60"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="60" id="OfJ-l4-dXR"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="안내방송 듣기">
+                                    <backgroundConfiguration key="background" cornerRadius="32">
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </backgroundConfiguration>
+                                    <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="baseBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </buttonConfiguration>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ei4-rl-QhD"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="Yn6-t2-eOq" firstAttribute="top" secondItem="0ff-xq-6Of" secondAttribute="bottom" constant="20" id="7Us-V8-1G4"/>
                             <constraint firstItem="ei4-rl-QhD" firstAttribute="trailing" secondItem="Qo8-4h-qBv" secondAttribute="trailing" constant="20" id="8FT-DI-iz1"/>
+                            <constraint firstItem="Yn6-t2-eOq" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" constant="20" id="EKe-FJ-e0d"/>
                             <constraint firstItem="5Z8-7w-Qka" firstAttribute="top" secondItem="85y-hC-PQP" secondAttribute="top" id="Eah-MJ-Exv"/>
                             <constraint firstAttribute="bottom" secondItem="5Z8-7w-Qka" secondAttribute="bottom" id="FXt-de-tBR"/>
+                            <constraint firstItem="ei4-rl-QhD" firstAttribute="trailing" secondItem="Yn6-t2-eOq" secondAttribute="trailing" constant="20" id="GlH-Fh-Ojl"/>
                             <constraint firstItem="oTy-R9-uS5" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" constant="20" id="NFd-gN-uiI"/>
                             <constraint firstItem="Qo8-4h-qBv" firstAttribute="top" secondItem="oTy-R9-uS5" secondAttribute="bottom" constant="50" id="Wcq-sM-c91"/>
+                            <constraint firstItem="0ff-xq-6Of" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" constant="26" id="epr-E2-Kdf"/>
+                            <constraint firstItem="ei4-rl-QhD" firstAttribute="trailing" secondItem="0ff-xq-6Of" secondAttribute="trailing" constant="29" id="fGR-hG-6T9"/>
+                            <constraint firstItem="ei4-rl-QhD" firstAttribute="bottom" secondItem="Yn6-t2-eOq" secondAttribute="bottom" constant="62" id="gDi-kc-QL8"/>
                             <constraint firstItem="ei4-rl-QhD" firstAttribute="trailing" secondItem="oTy-R9-uS5" secondAttribute="trailing" constant="20" id="h9X-ue-tPB"/>
                             <constraint firstItem="Qo8-4h-qBv" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" constant="20" id="msD-hd-yYX"/>
                             <constraint firstItem="5Z8-7w-Qka" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" id="szm-9Y-Wjz"/>
@@ -382,6 +405,7 @@
                 <navigationController storyboardIdentifier="MainViewController" automaticallyAdjustsScrollViewInsets="NO" id="iR2-wx-3gh" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="37t-ZH-1Ca">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <textAttributes key="titleTextAttributes">

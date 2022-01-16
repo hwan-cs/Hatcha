@@ -12,7 +12,7 @@ import CoreAudioKit
 import Accelerate
 
 
-class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
+class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeechRecognitionTaskDelegate
 {
     let audioEngine = AVAudioEngine()
     let speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "ko"))!
@@ -33,6 +33,8 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
     var destination: String?
     var lineNo: String?
     var SRResult = [String]()
+    
+    var speechDetected: Bool = false
     
     override func viewDidLoad()
     {
@@ -104,6 +106,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
             { timer in
                 self.audioFilePlayer.play()
                 self.startSpeechRecognition()
+                print(self.speechDetected)
             }
         }
         catch let error
@@ -189,6 +192,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
     
     func startSpeechRecognition()
     {
+        speechDetected = false
         self.request.shouldReportPartialResults = true
         self.speechRecognizer.defaultTaskHint = .dictation
         if (self.speechRecognizer.isAvailable)
@@ -221,6 +225,13 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
         audioEngine.inputNode.removeTap(onBus: 0)
     }
     
+    func speechRecognitionDidDetectSpeech(_ task: SFSpeechRecognitionTask)
+    {
+        //turn global bool variable true
+        //for 안내방송 button
+        //make button clickable when bool var is true
+        speechDetected = true
+    }
     func alertView(_ message: String)
     {
         let controller = UIAlertController.init(title: "에러 발생..!", message: message, preferredStyle: .alert)

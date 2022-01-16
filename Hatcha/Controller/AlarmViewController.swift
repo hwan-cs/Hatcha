@@ -43,7 +43,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
         
-//        destinationStationLabel.text = "도착 역: \(destination!)"
+        destinationStationLabel.text = "도착 역: \(destination!)"
         currentStationLabel.adjustsFontSizeToFitWidth = true
         speechRecognizer.delegate = self
         requestPermission()
@@ -59,7 +59,6 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
             try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
             //try audioSession.setPreferredSampleRate(44100.0)
             let inputNode = audioEngine.inputNode
-
             
             let equalizer = AVAudioUnitEQ(numberOfBands: 2)
 
@@ -82,7 +81,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
             { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
                 for i in 0..<Int(buffer.frameCapacity)
                 {
-                    buffer.floatChannelData?.pointee[i] = (buffer.floatChannelData?.pointee[i])! * 2000.0
+                    buffer.floatChannelData?.pointee[i] = (buffer.floatChannelData?.pointee[i])! * 1000.0
                 }
                 self.audioFilePlayer.scheduleBuffer(buffer, completionHandler: nil)
             }
@@ -97,13 +96,13 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
 //            {
 //                readBuffer.floatChannelData?.pointee[i] = (readBuffer.floatChannelData?.pointee[i])! * 100.0
 //            }
-            
-            Timer.scheduledTimer(withTimeInterval: 15, repeats: true)
+            self.audioFilePlayer.installTap(onBus: 0, bufferSize: 1024, format: nil)
+            { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+                self.request.append(buffer)
+            }
+            Timer.scheduledTimer(withTimeInterval: 10, repeats: true)
             { timer in
-                self.audioFilePlayer.installTap(onBus: 0, bufferSize: 1024, format: nil)
-                { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-                    self.request.append(buffer)
-                }
+                self.audioFilePlayer.play()
                 self.startSpeechRecognition()
             }
         }
@@ -200,7 +199,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
                 guard let result = result else { print("No result!"); return }
                 self.speechLabel.text = result.bestTranscription.formattedString
                 print(result.bestTranscription.formattedString)
-//                self.determineStation(self.speechLabel.text!)
+                self.determineStation(self.speechLabel.text!)
             })
         }
         else
@@ -208,6 +207,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate
             print("Device doesn't support speech recognition")
         }
         print("done")
+        self.request = SFSpeechAudioBufferRecognitionRequest()
     }
     
     func cancelSpeechRecognition()

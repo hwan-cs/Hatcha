@@ -93,8 +93,8 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         {
             
             let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController") as! AlarmViewController
-//            vc.lineNo = self.lineDropDown.selectedItem
-//            vc.destination = self.dropDown.selectedItem
+            vc.lineNo = self.lineDropDown.selectedItem
+            vc.destination = self.dropDown.selectedItem
             let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
             if let window = scene?.windows.first
             {

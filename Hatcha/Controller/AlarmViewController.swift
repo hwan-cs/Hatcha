@@ -35,6 +35,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     var SRResult = [String]()
     
     var speechDetected: Bool = false
+    @IBOutlet var listenButton: UIButton!
     
     override func viewDidLoad()
     {
@@ -47,6 +48,10 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         
         destinationStationLabel.text = "도착 역: \(destination!)"
         currentStationLabel.adjustsFontSizeToFitWidth = true
+        listenButton.layer.cornerRadius = 32
+        listenButton.isEnabled = false
+        listenButton.isUserInteractionEnabled = false
+        listenButton.backgroundColor = .lightGray
         speechRecognizer.delegate = self
         requestPermission()
         
@@ -65,19 +70,21 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             let equalizer = AVAudioUnitEQ(numberOfBands: 2)
 
             equalizer.bands[0].filterType = .lowPass
-            equalizer.bands[0].frequency = 500
+            equalizer.bands[0].frequency = 1800
             equalizer.bands[0].bypass = false
 
             //MARK: - Highpass filter
             equalizer.bands[1].filterType = .highPass
-            equalizer.bands[1].frequency = 70
+            equalizer.bands[1].frequency = 60
             equalizer.bands[1].bypass = false
 
             audioEngine.attach(equalizer)
             audioEngine.attach(audioFilePlayer)
+            audioEngine.connect(audioEngine.inputNode, to: equalizer, format: inputNode.inputFormat(forBus: 0))
             audioEngine.connect(audioFilePlayer, to: equalizer, format: inputNode.outputFormat(forBus: 0))
             audioEngine.connect(equalizer, to: audioEngine.outputNode, format: inputNode.outputFormat(forBus: 0))
-            
+
+            audioEngine.prepare()
             let recordingFormat = inputNode.outputFormat(forBus: 0)
             inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat)
             { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
@@ -85,9 +92,9 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
                 {
                     buffer.floatChannelData?.pointee[i] = (buffer.floatChannelData?.pointee[i])! * 1000.0
                 }
+                self.request.append(buffer)
                 self.audioFilePlayer.scheduleBuffer(buffer, completionHandler: nil)
             }
-            audioEngine.prepare()
             try audioEngine.start()
             
             //MARK: - Uncomment to play normalized audio
@@ -98,14 +105,35 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
 //            {
 //                readBuffer.floatChannelData?.pointee[i] = (readBuffer.floatChannelData?.pointee[i])! * 100.0
 //            }
-            self.audioFilePlayer.installTap(onBus: 0, bufferSize: 1024, format: nil)
-            { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-                self.request.append(buffer)
-            }
+            
+//            self.audioFilePlayer.installTap(onBus: 0, bufferSize: 1024, format: nil)
+//            { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
+//                self.request.append(buffer)
+//            }
             Timer.scheduledTimer(withTimeInterval: 10, repeats: true)
             { timer in
-                self.audioFilePlayer.play()
-                self.startSpeechRecognition()
+                self.speechDetected = false
+                //self.audioFilePlayer.play()
+                self.startSpeechRecognition
+                { success in
+                    if success == true
+                    {
+                        self.request = SFSpeechAudioBufferRecognitionRequest()
+                        if self.speechDetected == true
+                        {
+                            self.listenButton.isEnabled = true
+                            self.listenButton.isUserInteractionEnabled = true
+                            self.listenButton.backgroundColor = .white
+                        }
+                        else
+                        {
+                            self.audioFilePlayer.stop()
+                            self.listenButton.isEnabled = false
+                            self.listenButton.isUserInteractionEnabled = false
+                            self.listenButton.backgroundColor = .lightGray
+                        }
+                    }
+                }
                 print(self.speechDetected)
             }
         }
@@ -190,9 +218,8 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         return " "
     }
     
-    func startSpeechRecognition()
+    func startSpeechRecognition(completion: @escaping (_ success: Bool) -> Void)
     {
-        speechDetected = false
         self.request.shouldReportPartialResults = true
         self.speechRecognizer.defaultTaskHint = .dictation
         if (self.speechRecognizer.isAvailable)
@@ -204,6 +231,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
                 self.speechLabel.text = result.bestTranscription.formattedString
                 print(result.bestTranscription.formattedString)
                 self.determineStation(self.speechLabel.text!)
+                completion(true)
             })
         }
         else
@@ -211,7 +239,12 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             print("Device doesn't support speech recognition")
         }
         print("done")
-        self.request = SFSpeechAudioBufferRecognitionRequest()
+    }
+    
+    @IBAction func listenButtonAction(_ sender: UIButton)
+    {
+        self.audioFilePlayer.play()
+        self.audioFilePlayer.stop()
     }
     
     func cancelSpeechRecognition()
@@ -230,6 +263,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         //turn global bool variable true
         //for 안내방송 button
         //make button clickable when bool var is true
+        print("detected")
         speechDetected = true
     }
     func alertView(_ message: String)

@@ -35,6 +35,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     var SRResult = [String]()
     
     var speechDetected: Bool = false
+    var counter = -1
     @IBOutlet var listenButton: UIButton!
     
     override func viewDidLoad()
@@ -110,32 +111,15 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
 //            { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
 //                self.request.append(buffer)
 //            }
-            Timer.scheduledTimer(withTimeInterval: 10, repeats: true)
+
+
+            Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true, block:
             { timer in
-                self.speechDetected = false
-                //self.audioFilePlayer.play()
-                self.startSpeechRecognition
-                { success in
-                    if success == true
-                    {
-                        self.request = SFSpeechAudioBufferRecognitionRequest()
-                        if self.speechDetected == true
-                        {
-                            self.listenButton.isEnabled = true
-                            self.listenButton.isUserInteractionEnabled = true
-                            self.listenButton.backgroundColor = .white
-                        }
-                        else
-                        {
-                            self.audioFilePlayer.stop()
-                            self.listenButton.isEnabled = false
-                            self.listenButton.isUserInteractionEnabled = false
-                            self.listenButton.backgroundColor = .lightGray
-                        }
-                    }
-                }
-                print(self.speechDetected)
-            }
+                self.startSpeechRecognition()
+                self.counter += 1
+                self.request = SFSpeechAudioBufferRecognitionRequest()
+            })
+            print(self.speechDetected)
         }
         catch let error
         {
@@ -200,7 +184,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         }
     }
     
-    func determineStation(_ transcription: String) -> String
+    func determineStation(_ transcription: String)
     {
         let stationsForLineNo = Subway.stations[self.lineNo!]!
         for station in stationsForLineNo
@@ -215,10 +199,9 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             currentStationLabel.text = "이번 역: \(SRResult[0])"
             SRResult = [String]()
         }
-        return " "
     }
     
-    func startSpeechRecognition(completion: @escaping (_ success: Bool) -> Void)
+    func startSpeechRecognition()
     {
         self.request.shouldReportPartialResults = true
         self.speechRecognizer.defaultTaskHint = .dictation
@@ -226,12 +209,23 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         {
             self.speechRecognizer.recognitionTask(with: self.request, resultHandler:
             { result, error in
-                guard error == nil else { print("Error: \(error!)"); return }
-                guard let result = result else { print("No result!"); return }
+                guard error == nil else
+                {
+                    print("Error: \(error!)")
+                    self.speechDetected = false
+                    self.listenButton.isEnabled = false
+                    self.listenButton.isUserInteractionEnabled = false
+                    self.listenButton.backgroundColor = .lightGray
+                    return
+                }
+                self.speechDetected = true
+                guard let result = result else { return }
                 self.speechLabel.text = result.bestTranscription.formattedString
-                print(result.bestTranscription.formattedString)
+                print("result: \(result.bestTranscription.formattedString)")
                 self.determineStation(self.speechLabel.text!)
-                completion(true)
+                self.listenButton.isEnabled = true
+                self.listenButton.isUserInteractionEnabled = true
+                self.listenButton.backgroundColor = .white
             })
         }
         else
@@ -243,8 +237,17 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     
     @IBAction func listenButtonAction(_ sender: UIButton)
     {
-        self.audioFilePlayer.play()
-        self.audioFilePlayer.stop()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 10)
+        {
+            self.audioFilePlayer.pause()
+            self.audioFilePlayer.stop()
+        }
+        let delayTime = 10*counter
+        let outputFormat = self.audioFilePlayer.outputFormat(forBus: 0)
+        let startSampleTime = AVAudioFramePosition(Double(delayTime) * outputFormat.sampleRate)
+        let startTime = AVAudioTime(sampleTime: startSampleTime, atRate: outputFormat.sampleRate)
+//        let someTime = AVAudioTime(hostTime: UInt64()
+        self.audioFilePlayer.play(at: startTime)
     }
     
     func cancelSpeechRecognition()
@@ -258,14 +261,6 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         audioEngine.inputNode.removeTap(onBus: 0)
     }
     
-    func speechRecognitionDidDetectSpeech(_ task: SFSpeechRecognitionTask)
-    {
-        //turn global bool variable true
-        //for 안내방송 button
-        //make button clickable when bool var is true
-        print("detected")
-        speechDetected = true
-    }
     func alertView(_ message: String)
     {
         let controller = UIAlertController.init(title: "에러 발생..!", message: message, preferredStyle: .alert)

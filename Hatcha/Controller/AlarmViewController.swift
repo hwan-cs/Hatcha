@@ -118,7 +118,14 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
 //            }
 
             self.startSpeechRecognition()
-            Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(changeButtonStatus), userInfo: nil, repeats: true)
+            Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true)
+            { timer in
+                self.changeButtonStatus()
+                if self.containsSpeech == false
+                {
+                    self.audioFilePlayer.stop()
+                }
+            }
             print(self.speechDetected)
         }
         catch let error
@@ -173,13 +180,6 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         }
         else
         {
-            if self.containsSpeech == false
-            {
-//                DispatchQueue.global().async
-//                {
-                    self.audioFilePlayer.stop()
-                // }
-            }
             print("false")
             if self.didPlay == true
             {

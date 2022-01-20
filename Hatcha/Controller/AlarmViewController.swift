@@ -35,7 +35,9 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     var SRResult = [String]()
     
     var speechDetected: Bool = false
-    var counter = -1
+    var shouldStopRecording: Bool = false
+    var didPlay: Bool = false
+    var containsSpeech: Bool = false
     @IBOutlet var listenButton: UIButton!
     
     override func viewDidLoad()
@@ -94,7 +96,10 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
                     buffer.floatChannelData?.pointee[i] = (buffer.floatChannelData?.pointee[i])! * 1000.0
                 }
                 self.request.append(buffer)
-                self.audioFilePlayer.scheduleBuffer(buffer, completionHandler: nil)
+                if self.shouldStopRecording == false
+                {
+                    self.audioFilePlayer.scheduleBuffer(buffer, completionHandler: nil)
+                }
             }
             try audioEngine.start()
             
@@ -112,13 +117,8 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
 //                self.request.append(buffer)
 //            }
 
-
-            Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true, block:
-            { timer in
-                self.startSpeechRecognition()
-                self.counter += 1
-                self.request = SFSpeechAudioBufferRecognitionRequest()
-            })
+            self.startSpeechRecognition()
+            Timer.scheduledTimer(timeInterval: 3.0, target: self, selector: #selector(changeButtonStatus), userInfo: nil, repeats: true)
             print(self.speechDetected)
         }
         catch let error
@@ -136,6 +136,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     {
         return .lightContent
     }
+    
     func avgMagnitude(buffer: AVAudioPCMBuffer) -> Float
     {
         var total: Float = 0.0
@@ -155,6 +156,42 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             window.rootViewController = vc
             UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
         }
+    }
+    @objc func changeButtonStatus()
+    {
+        if self.speechDetected == true
+        {
+            print("true")
+            if self.didPlay == false
+            {
+                self.listenButton.isEnabled = true
+                self.listenButton.isUserInteractionEnabled = true
+                self.listenButton.backgroundColor = .white
+                self.shouldStopRecording = true
+                self.containsSpeech = true
+            }
+        }
+        else
+        {
+            if self.containsSpeech == false
+            {
+//                DispatchQueue.global().async
+//                {
+                    self.audioFilePlayer.stop()
+                // }
+            }
+            print("false")
+            if self.didPlay == true
+            {
+                self.containsSpeech = false
+                self.didPlay = false
+                self.listenButton.isEnabled = false
+                self.listenButton.isUserInteractionEnabled = false
+                self.listenButton.backgroundColor = .lightGray
+                self.shouldStopRecording = false
+            }
+        }
+        self.speechDetected = false
     }
     
     //MARK: - SFSpeechRecognizer Delegate methods
@@ -213,19 +250,13 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
                 {
                     print("Error: \(error!)")
                     self.speechDetected = false
-                    self.listenButton.isEnabled = false
-                    self.listenButton.isUserInteractionEnabled = false
-                    self.listenButton.backgroundColor = .lightGray
                     return
                 }
-                self.speechDetected = true
                 guard let result = result else { return }
                 self.speechLabel.text = result.bestTranscription.formattedString
                 print("result: \(result.bestTranscription.formattedString)")
                 self.determineStation(self.speechLabel.text!)
-                self.listenButton.isEnabled = true
-                self.listenButton.isUserInteractionEnabled = true
-                self.listenButton.backgroundColor = .white
+                self.speechDetected = true
             })
         }
         else
@@ -235,19 +266,20 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         print("done")
     }
     
+    func speechRecognitionDidDetectSpeech(_ task: SFSpeechRecognitionTask)
+    {
+        self.speechDetected = true
+    }
+    
     @IBAction func listenButtonAction(_ sender: UIButton)
     {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10)
+        print("pressed")
+        DispatchQueue.global().async
         {
-            self.audioFilePlayer.pause()
-            self.audioFilePlayer.stop()
+            self.didPlay = true
+            self.audioFilePlayer.play()
+//            self.audioFilePlayer.stop()
         }
-        let delayTime = 10*counter
-        let outputFormat = self.audioFilePlayer.outputFormat(forBus: 0)
-        let startSampleTime = AVAudioFramePosition(Double(delayTime) * outputFormat.sampleRate)
-        let startTime = AVAudioTime(sampleTime: startSampleTime, atRate: outputFormat.sampleRate)
-//        let someTime = AVAudioTime(hostTime: UInt64()
-        self.audioFilePlayer.play(at: startTime)
     }
     
     func cancelSpeechRecognition()

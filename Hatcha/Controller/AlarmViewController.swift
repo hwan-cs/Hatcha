@@ -25,9 +25,11 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     var audioPlayerNode: AVAudioPlayerNode = AVAudioPlayerNode()
     var audioFile: AVAudioFile!
     
-    @IBOutlet var speechLabel: UILabel!
+
+    @IBOutlet var listenButtonImageView: UIImageView!
     @IBOutlet var currentStationLabel: UILabel!
     @IBOutlet var destinationStationLabel: UILabel!
+    @IBOutlet var stopAlarmButton: UIButton!
     
     let data = Array(Set(Subway.stations.map{$0.value}.flatMap{$0}))
     var destination: String?
@@ -38,7 +40,6 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     var shouldStopRecording: Bool = false
     var didPlay: Bool = false
     var containsSpeech: Bool = false
-    @IBOutlet var listenButton: UIButton!
     
     override func viewDidLoad()
     {
@@ -51,17 +52,19 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         
         destinationStationLabel.text = "도착 역: \(destination!)"
         currentStationLabel.adjustsFontSizeToFitWidth = true
-        listenButton.layer.cornerRadius = 32
-        listenButton.isEnabled = false
-        listenButton.isUserInteractionEnabled = false
-        listenButton.backgroundColor = .lightGray
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(listenButtonAction(tapGestureRecognizer:)))
+        listenButtonImageView.isUserInteractionEnabled = false
+        listenButtonImageView.addGestureRecognizer(tapGestureRecognizer)
+        stopAlarmButton.layer.cornerRadius = 12
+        
         speechRecognizer.delegate = self
         requestPermission()
         
-        let audioURL = Bundle.main.url(forResource: "audiotest", withExtension: "m4a")
+//        let audioURL = Bundle.main.url(forResource: "audiotest", withExtension: "m4a")
         do
         {
-            let audioFile = try AVAudioFile(forReading: audioURL!)
+//            let audioFile = try AVAudioFile(forReading: audioURL!)
             // Configure the audio session for the app.
             let audioSession = AVAudioSession.sharedInstance()
             try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.allowBluetoothA2DP, .mixWithOthers])
@@ -120,6 +123,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             self.startSpeechRecognition()
             Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true)
             { timer in
+                print("Timer triggered")
                 self.changeButtonStatus()
                 if self.containsSpeech == false
                 {
@@ -156,38 +160,47 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     
     @IBAction func cancelAlarmTapped(_ sender: UIButton)
     {
-        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MainViewController")
-        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first
-        {
-            window.rootViewController = vc
-            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+        let alert = UIAlertController(title: "알람을 멈추시겠습니까?", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "예", style: .default)
+        { (action) in
+            self.request.endAudio()
+            self.audioEngine.stop()
+            self.audioEngine.inputNode.removeTap(onBus: 0)
+            
+            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MainViewController")
+            let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+            if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first
+            {
+                window.rootViewController = vc
+                UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+            }
         }
+        alert.addAction(action)
+        alert.addAction(UIAlertAction(title: "아니오", style: .cancel, handler: { (action: UIAlertAction!) in
+              print("Alert dismissed")
+        }))
+        present(alert, animated: true, completion: nil)
     }
     @objc func changeButtonStatus()
     {
         if self.speechDetected == true
         {
-            print("true")
             if self.didPlay == false
             {
-                self.listenButton.isEnabled = true
-                self.listenButton.isUserInteractionEnabled = true
-                self.listenButton.backgroundColor = .white
+                self.listenButtonImageView.isUserInteractionEnabled = true
+                self.listenButtonImageView.tintColor = .white
                 self.shouldStopRecording = true
                 self.containsSpeech = true
             }
         }
         else
         {
-            print("false")
             if self.didPlay == true
             {
                 self.containsSpeech = false
                 self.didPlay = false
-                self.listenButton.isEnabled = false
-                self.listenButton.isUserInteractionEnabled = false
-                self.listenButton.backgroundColor = .lightGray
+                self.listenButtonImageView.isUserInteractionEnabled = false
+                self.listenButtonImageView.tintColor = .lightGray
                 self.shouldStopRecording = false
             }
         }
@@ -253,9 +266,8 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
                     return
                 }
                 guard let result = result else { return }
-                self.speechLabel.text = result.bestTranscription.formattedString
                 print("result: \(result.bestTranscription.formattedString)")
-                self.determineStation(self.speechLabel.text!)
+                self.determineStation(result.bestTranscription.formattedString)
                 self.speechDetected = true
             })
         }
@@ -271,7 +283,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         self.speechDetected = true
     }
     
-    @IBAction func listenButtonAction(_ sender: UIButton)
+    @objc func listenButtonAction(tapGestureRecognizer: UITapGestureRecognizer)
     {
         print("pressed")
         DispatchQueue.global().async

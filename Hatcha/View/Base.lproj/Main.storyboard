@@ -121,15 +121,6 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ff-xq-6Of">
-                                <rect key="frame" x="26" y="318" width="359" height="402"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="402" id="01R-tn-gT3"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yn6-t2-eOq">
                                 <rect key="frame" x="20" y="740" width="374" height="60"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -138,21 +129,35 @@
                                 </constraints>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="안내방송 듣기">
+                                <state key="normal" title="알람 멈추기">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
-                                <state key="disabled" title="안내방송 듣기">
+                                <state key="disabled">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
-                                    <action selector="listenButtonAction:" destination="3AN-iQ-Yjd" eventType="touchUpInside" id="oaB-3X-pVG"/>
+                                    <action selector="cancelAlarmTapped:" destination="3AN-iQ-Yjd" eventType="touchUpInside" id="EGE-eM-vjv"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="headphones.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="tcD-DH-cWp">
+                                <rect key="frame" x="98" y="380" width="218" height="126"/>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="218" id="QVj-nO-FNW"/>
+                                    <constraint firstAttribute="height" constant="127" id="wIk-LU-BF2"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="안내방송 듣기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wUB-Am-RcT">
+                                <rect key="frame" x="153" y="518.5" width="108.5" height="24"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ei4-rl-QhD"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Yn6-t2-eOq" firstAttribute="top" secondItem="0ff-xq-6Of" secondAttribute="bottom" constant="20" id="7Us-V8-1G4"/>
+                            <constraint firstItem="wUB-Am-RcT" firstAttribute="top" secondItem="tcD-DH-cWp" secondAttribute="bottom" constant="12" id="1Ul-yq-OaW"/>
                             <constraint firstItem="ei4-rl-QhD" firstAttribute="trailing" secondItem="Qo8-4h-qBv" secondAttribute="trailing" constant="20" id="8FT-DI-iz1"/>
                             <constraint firstItem="Yn6-t2-eOq" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" constant="20" id="EKe-FJ-e0d"/>
                             <constraint firstItem="5Z8-7w-Qka" firstAttribute="top" secondItem="85y-hC-PQP" secondAttribute="top" id="Eah-MJ-Exv"/>
@@ -160,13 +165,14 @@
                             <constraint firstItem="ei4-rl-QhD" firstAttribute="trailing" secondItem="Yn6-t2-eOq" secondAttribute="trailing" constant="20" id="GlH-Fh-Ojl"/>
                             <constraint firstItem="oTy-R9-uS5" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" constant="20" id="NFd-gN-uiI"/>
                             <constraint firstItem="Qo8-4h-qBv" firstAttribute="top" secondItem="oTy-R9-uS5" secondAttribute="bottom" constant="50" id="Wcq-sM-c91"/>
-                            <constraint firstItem="0ff-xq-6Of" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" constant="26" id="epr-E2-Kdf"/>
-                            <constraint firstItem="ei4-rl-QhD" firstAttribute="trailing" secondItem="0ff-xq-6Of" secondAttribute="trailing" constant="29" id="fGR-hG-6T9"/>
+                            <constraint firstItem="tcD-DH-cWp" firstAttribute="centerX" secondItem="85y-hC-PQP" secondAttribute="centerX" id="dzt-KE-uDn"/>
                             <constraint firstItem="ei4-rl-QhD" firstAttribute="bottom" secondItem="Yn6-t2-eOq" secondAttribute="bottom" constant="62" id="gDi-kc-QL8"/>
                             <constraint firstItem="ei4-rl-QhD" firstAttribute="trailing" secondItem="oTy-R9-uS5" secondAttribute="trailing" constant="20" id="h9X-ue-tPB"/>
                             <constraint firstItem="Qo8-4h-qBv" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" constant="20" id="msD-hd-yYX"/>
+                            <constraint firstItem="wUB-Am-RcT" firstAttribute="centerX" secondItem="85y-hC-PQP" secondAttribute="centerX" id="pdf-ex-O6n"/>
                             <constraint firstItem="5Z8-7w-Qka" firstAttribute="leading" secondItem="ei4-rl-QhD" secondAttribute="leading" id="szm-9Y-Wjz"/>
                             <constraint firstItem="oTy-R9-uS5" firstAttribute="top" secondItem="ei4-rl-QhD" secondAttribute="top" constant="50" id="utC-37-AgP"/>
+                            <constraint firstItem="tcD-DH-cWp" firstAttribute="top" secondItem="Qo8-4h-qBv" secondAttribute="bottom" constant="120" id="wqE-of-SFv"/>
                             <constraint firstItem="5Z8-7w-Qka" firstAttribute="trailing" secondItem="ei4-rl-QhD" secondAttribute="trailing" id="y2L-9e-wFB"/>
                         </constraints>
                     </view>
@@ -174,8 +180,8 @@
                     <connections>
                         <outlet property="currentStationLabel" destination="oTy-R9-uS5" id="OgX-tU-FmS"/>
                         <outlet property="destinationStationLabel" destination="Qo8-4h-qBv" id="LhR-Qb-SHc"/>
-                        <outlet property="listenButton" destination="Yn6-t2-eOq" id="VKx-wi-jeP"/>
-                        <outlet property="speechLabel" destination="0ff-xq-6Of" id="8zG-gD-baw"/>
+                        <outlet property="listenButtonImageView" destination="tcD-DH-cWp" id="mb3-3C-O8S"/>
+                        <outlet property="stopAlarmButton" destination="Yn6-t2-eOq" id="XdU-qU-GME"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dh5-h2-Vcm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -319,13 +325,20 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rAM-G5-f1P">
                                 <rect key="frame" x="68.5" y="237" width="200" height="44"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IuK-6f-RZJ">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IuK-6f-RZJ">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="44"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="도착 역을 선택하세요...">
-                                            <fontDescription key="titleFontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="15"/>
-                                            <color key="baseForegroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <buttonConfiguration key="configuration" style="plain">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="도착 역을 선택하세요...">
+                                                    <attributes>
+                                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <font key="NSFont" size="15" name="AppleSDGothicNeo-SemiBold"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                            <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </buttonConfiguration>
                                         <connections>
                                             <action selector="selectLineButtonAction:" destination="8jk-jK-QDN" eventType="touchUpInside" id="8Gl-TD-UuS"/>
@@ -430,6 +443,7 @@
     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
     <resources>
         <image name="backgroundImg" width="1024" height="1366"/>
+        <image name="headphones.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

@@ -53,6 +53,9 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
             searchBar.text = item
             searchBar.endEditing(true)
             selectLineButton.isUserInteractionEnabled = true
+            selectLineButton.backgroundColor = .white
+            selectLineButton.setTitleColor(.black, for: .normal)
+            selectLineButton.setTitle("노선을 선택하세요...", for: .normal)
             lineDropDown.dataSource = self.findKeyForValue(value: item, dictionary: Subway.stations)!
             lineDropDown.show()
         }
@@ -89,17 +92,37 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
     @objc func onSaveTap(_ sender: UIBarButtonItem)
     {
         //save alarm info in Realm database
-        self.dismiss(animated: true)
+        if selectLineButton.titleLabel?.text == "도착 역을 선택하세요..."
         {
-            
-            let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController") as! AlarmViewController
-            vc.lineNo = self.lineDropDown.selectedItem
-            vc.destination = self.dropDown.selectedItem
-            let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-            if let window = scene?.windows.first
+            let alert = UIAlertController(title: "도착 역을 선택하세요!", message: "", preferredStyle: .alert)
+            self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now()+1.0)
             {
-                window.rootViewController = vc
-                UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                alert.dismiss(animated: true, completion: nil)
+            }
+        }
+        else if selectLineButton.titleLabel?.text == "노선을 선택하세요..."
+        {
+            let alert = UIAlertController(title: "노선을 선택하세요!", message: "", preferredStyle: .alert)
+            self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now()+1.0)
+            {
+                alert.dismiss(animated: true, completion: nil)
+            }
+        }
+        else
+        {
+            self.dismiss(animated: true)
+            {
+                let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController") as! AlarmViewController
+                vc.lineNo = self.lineDropDown.selectedItem
+                vc.destination = self.dropDown.selectedItem
+                let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                if let window = scene?.windows.first
+                {
+                    window.rootViewController = vc
+                    UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                }
             }
         }
     }
@@ -125,11 +148,11 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
     //MARK: - SearchBar delegate methods
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
     {
-        if searchText == ""
-        {
-            selectLineButton.isUserInteractionEnabled = false
-            selectLineButton.setTitle("도착 역을 선택하세요...", for: .normal)
-        }
+        selectLineButton.isUserInteractionEnabled = false
+        selectLineButton.backgroundColor = .lightGray
+        selectLineButton.setTitleColor(.white, for: .normal)
+        selectLineButton.setTitle("도착 역을 선택하세요...", for: .normal)
+
         filteredData = searchText.isEmpty ? data : data.filter({ (dat) -> Bool in
             dat.range(of: searchText, options: .caseInsensitive) != nil
         })

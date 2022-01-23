@@ -11,7 +11,7 @@ class MyTableViewCell: UITableViewCell
 {
     @IBOutlet var titleLabel: UILabel!
     @IBOutlet var setAlarmButton: UIButton!
- 
+    
     override func awakeFromNib()
     {
         super.awakeFromNib()
@@ -23,7 +23,7 @@ class MyTableViewCell: UITableViewCell
     override func setSelected(_ selected: Bool, animated: Bool)
     {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
+    
 }

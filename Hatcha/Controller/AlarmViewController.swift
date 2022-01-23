@@ -51,6 +51,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         self.navigationController?.view.backgroundColor = .clear
         
         destinationStationLabel.text = "도착 역: \(destination!)"
+        destinationStationLabel.adjustsFontSizeToFitWidth = true
         currentStationLabel.adjustsFontSizeToFitWidth = true
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(listenButtonAction(tapGestureRecognizer:)))
@@ -289,12 +290,8 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     @objc func listenButtonAction(tapGestureRecognizer: UITapGestureRecognizer)
     {
         print("pressed")
-        DispatchQueue.global().async
-        {
-            self.didPlay = true
-            self.audioFilePlayer.play()
-//            self.audioFilePlayer.stop()
-        }
+        self.didPlay = true
+        self.audioFilePlayer.play()
     }
     
     func cancelSpeechRecognition()

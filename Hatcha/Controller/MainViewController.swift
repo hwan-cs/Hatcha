@@ -6,21 +6,28 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MainViewController: UIViewController
 {
     @IBOutlet var makeAlarmButton: UIButton!
     @IBOutlet var tableView: UITableView!
     
+    var realm: Realm? = nil
+    var subwayAlarms: Results<SubwayAlarmData>?
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        print("viewdidload")
         view.backgroundColor = .black
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)
         tableView.delegate = self
         tableView.dataSource = self
         
+        realm = try! Realm()
+        loadAlarms()
         self.navigationController?.navigationBar.topItem?.title = "핫차"
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -37,6 +44,13 @@ class MainViewController: UIViewController
     override func viewWillAppear(_ animated: Bool)
     {
         self.navigationController?.navigationBar.barStyle = .black
+        tableView.reloadData()
+    }
+    
+    func loadAlarms()
+    {
+        subwayAlarms = realm!.objects(SubwayAlarmData.self)
+        tableView.reloadData()
     }
 }
 
@@ -63,6 +77,16 @@ extension MainViewController: UITableViewDelegate
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
     {
         let delete = UIContextualAction(style: .destructive, title: "삭제") { [unowned self] action, view, completionHandler in
+            do
+            {
+                try realm?.write({
+                    realm?.delete(subwayAlarms![indexPath.row])
+                })
+            }
+            catch let error
+            {
+                print(error.localizedDescription)
+            }
             tableView.deleteRows(at: [indexPath], with: .fade)
             completionHandler(true)
         }
@@ -71,7 +95,7 @@ extension MainViewController: UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MyTableViewCell
-        cell.titleLabel.text = "Hello world"
+        cell.titleLabel.attributedText = NSAttributedString(string: self.subwayAlarms![indexPath.row].destination!, attributes: [ .font: UIFont.systemFont(ofSize: 18.0, weight: .semibold), .foregroundColor: UIColor.white ])
         return cell
     }
 }
@@ -79,7 +103,7 @@ extension MainViewController: UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return 10
+        return subwayAlarms?.count ?? 0
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {

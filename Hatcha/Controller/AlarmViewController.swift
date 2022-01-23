@@ -35,6 +35,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     var lineNo: String?
     var SRResult = [String]()
     
+    var timer: Timer?
     var speechDetected: Bool = false
     var shouldStopRecording: Bool = false
     var didPlay: Bool = false
@@ -121,7 +122,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
 //            }
 
             self.startSpeechRecognition()
-            Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true)
+            timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true)
             { timer in
                 print("Timer triggered")
                 self.changeButtonStatus()
@@ -166,6 +167,8 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             self.request.endAudio()
             self.audioEngine.stop()
             self.audioEngine.inputNode.removeTap(onBus: 0)
+            self.timer?.invalidate()
+            self.timer = nil
             
             let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MainViewController")
             let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene

@@ -7,6 +7,7 @@
 
 import UIKit
 import DropDown
+import RealmSwift
 
 class SubwayViewController: UIViewController, UISearchBarDelegate
 {
@@ -19,9 +20,12 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
     var lineDropDown = DropDown()
     let data = Array(Set(Subway.stations.map{$0.value}.flatMap{$0}))
     var filteredData: [String] = []
+    
+    let realm = try! Realm()
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
         let navBar = UINavigationBar(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: 44))
         navBar.isTranslucent = false
         navBar.barTintColor = .white
@@ -112,6 +116,9 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         }
         else
         {
+            var alarm = SubwayAlarmData()
+            alarm.setup(destination: self.dropDown.selectedItem!, line: self.lineDropDown.selectedItem!)
+            saveSubwayAlarm(alarm)
             self.dismiss(animated: true)
             {
                 let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController") as! AlarmViewController
@@ -145,6 +152,20 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         return result
     }
 
+    func saveSubwayAlarm(_ alarm: SubwayAlarmData)
+    {
+        do
+        {
+            try realm.write({
+                realm.add(alarm, update: .modified)
+            })
+        }
+        catch let error
+        {
+            print(error.localizedDescription)
+        }
+    }
+    
     //MARK: - SearchBar delegate methods
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
     {

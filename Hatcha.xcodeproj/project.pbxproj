@@ -21,6 +21,7 @@
 		1ABD2AC32785FE0700AF27C2 /* AlarmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD2AC22785FE0600AF27C2 /* AlarmViewController.swift */; };
 		1AD6D1702791E17100CDBCC3 /* test2.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1AD6D16F2791E17100CDBCC3 /* test2.m4a */; };
 		1AD6D1742792F31B00CDBCC3 /* audiotest.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 1AD6D1732792F31B00CDBCC3 /* audiotest.m4a */; };
+		1AFD2C7D279D5C05006E3612 /* SubwayAlarmData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AFD2C7C279D5C05006E3612 /* SubwayAlarmData.swift */; };
 		A9A76320FFF9BE417DD91590 /* Pods_Hatcha.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F9D827C8A4C08A3E77CBD05 /* Pods_Hatcha.framework */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		1ABD2AC22785FE0600AF27C2 /* AlarmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlarmViewController.swift; sourceTree = "<group>"; };
 		1AD6D16F2791E17100CDBCC3 /* test2.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = test2.m4a; sourceTree = "<group>"; };
 		1AD6D1732792F31B00CDBCC3 /* audiotest.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = audiotest.m4a; sourceTree = "<group>"; };
+		1AFD2C7C279D5C05006E3612 /* SubwayAlarmData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubwayAlarmData.swift; sourceTree = "<group>"; };
 		4F9D827C8A4C08A3E77CBD05 /* Pods_Hatcha.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hatcha.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D89A6CB4EFEEE4421680114 /* Pods-Hatcha.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hatcha.debug.xcconfig"; path = "Target Support Files/Pods-Hatcha/Pods-Hatcha.debug.xcconfig"; sourceTree = "<group>"; };
 		9056CEE26D506A69196764C6 /* Pods-Hatcha.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hatcha.release.xcconfig"; path = "Target Support Files/Pods-Hatcha/Pods-Hatcha.release.xcconfig"; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				1ABD2AC02784A09800AF27C2 /* Subway.swift */,
+				1AFD2C7C279D5C05006E3612 /* SubwayAlarmData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -273,6 +276,7 @@
 			files = (
 				1ABD2AC32785FE0700AF27C2 /* AlarmViewController.swift in Sources */,
 				1A78EC6627820C6D00AEED90 /* SelectionViewController.swift in Sources */,
+				1AFD2C7D279D5C05006E3612 /* SubwayAlarmData.swift in Sources */,
 				1A78EC68278214CD00AEED90 /* SubwayViewController.swift in Sources */,
 				1A78EC642781B1DA00AEED90 /* Constants.swift in Sources */,
 				1A78EC4B277EF05B00AEED90 /* MainViewController.swift in Sources */,

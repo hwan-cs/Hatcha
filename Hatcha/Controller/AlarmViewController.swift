@@ -21,7 +21,6 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     var isStart: Bool = false
     
     var audioFilePlayer: AVAudioPlayerNode = AVAudioPlayerNode()
-    var equalizer: AVAudioUnitEQ!
     var audioPlayerNode: AVAudioPlayerNode = AVAudioPlayerNode()
     var audioFile: AVAudioFile!
     
@@ -74,7 +73,8 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             let inputNode = audioEngine.inputNode
             
             let equalizer = AVAudioUnitEQ(numberOfBands: 2)
-
+            
+            //MARK: - Lowpass filter
             equalizer.bands[0].filterType = .lowPass
             equalizer.bands[0].frequency = 1800
             equalizer.bands[0].bypass = false

@@ -80,7 +80,13 @@ class MainViewController: UIViewController, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
-        print("selected")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: K.subwayVC) as! SubwayViewController
+        vc.destination = subwayAlarms![indexPath.row].destination
+        vc.lineNo = subwayAlarms![indexPath.row].line
+        vc.prevStation = subwayAlarms![indexPath.row].prevStation
+        vc.inEditingMode = true
+        self.present(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
@@ -91,7 +97,7 @@ class MainViewController: UIViewController, UITableViewDelegate
         label.backgroundColor = .clear
         label.frame = CGRect.init(x: 12, y: 5, width: headerView.frame.width-12, height: headerView.frame.height)
         
-        label.attributedText = NSAttributedString(string: "나의 알림", attributes: [ .font: UIFont.systemFont(ofSize: 32, weight: .semibold), .foregroundColor: UIColor.white ])
+        label.attributedText = NSAttributedString(string: "나의 알람", attributes: [ .font: UIFont.systemFont(ofSize: 32, weight: .semibold), .foregroundColor: UIColor.white ])
 
         headerView.addSubview(label)
         
@@ -117,6 +123,13 @@ class MainViewController: UIViewController, UITableViewDelegate
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
+        if subwayAlarms?.count == 0
+        {
+            print("no cell")
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
+            cell.textLabel?.attributedText = NSAttributedString(string: "알람 없음", attributes: [ .font: UIFont.systemFont(ofSize: 22.0, weight: .semibold), .foregroundColor: UIColor.white ])
+            return cell
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MyTableViewCell
         cell.setAlarmButton.tag = indexPath.row
         cell.titleLabel.attributedText = NSAttributedString(string: "\(self.subwayAlarms![indexPath.row].destination!), \(self.subwayAlarms![indexPath.row].line!)", attributes: [ .font: UIFont.systemFont(ofSize: 18.0, weight: .semibold), .foregroundColor: UIColor.white ])
@@ -130,7 +143,7 @@ extension MainViewController: UITableViewDataSource
 {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
     {
-        return subwayAlarms?.count ?? 0
+        return subwayAlarms?.count == 0 ? 1:(subwayAlarms?.count as! Int)
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {

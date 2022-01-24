@@ -46,7 +46,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="522"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="591-Kh-LHK" customClass="MyTableViewCell" customModule="Hatcha" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="591-Kh-LHK" customClass="MyTableViewCell" customModule="Hatcha" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="49.5" width="414" height="43.5"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="591-Kh-LHK" id="lWz-rz-bq7">
@@ -406,6 +406,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="SxY-ii-upu"/>
                     <connections>
+                        <outlet property="prevStationSwitch" destination="Q4r-Kb-qOW" id="SP0-fC-gUJ"/>
                         <outlet property="previousStationAlarmView" destination="1JN-P1-An9" id="Akd-zy-JcG"/>
                         <outlet property="searchBar" destination="W4v-Ez-uI4" id="GyR-J8-yGb"/>
                         <outlet property="selectLineButton" destination="IuK-6f-RZJ" id="psA-Yd-Pjx"/>

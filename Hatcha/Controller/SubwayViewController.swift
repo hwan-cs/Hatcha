@@ -21,6 +21,13 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
     let data = Array(Set(Subway.stations.map{$0.value}.flatMap{$0}))
     var filteredData: [String] = []
     
+    @IBOutlet var prevStationSwitch: UISwitch!
+    
+    var destination:String?
+    var lineNo:String?
+    var prevStation:String?
+    var inEditingMode: Bool = false
+    
     let realm = try! Realm()
     override func viewDidLoad()
     {
@@ -81,6 +88,13 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         }
         
         previousStationAlarmView.layer.cornerRadius = 16
+        
+        if destination != nil && lineNo != nil && prevStation != nil
+        {
+            searchBar.text = destination!
+            selectLineButton.setTitle(lineNo!, for: .normal)
+            prevStationSwitch.isOn = (prevStation == "true")
+        }
     }
     
     @IBAction func selectLineButtonAction(_ sender: UIButton)
@@ -117,19 +131,27 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         else
         {
             var alarm = SubwayAlarmData()
-            alarm.setup(destination: self.dropDown.selectedItem!, line: self.lineDropDown.selectedItem!)
+            alarm.setup(destination: self.searchBar.text!, line: (selectLineButton.titleLabel?.text)!, prevStation: prevStationSwitch.isOn==true ? "true":"false")
             saveSubwayAlarm(alarm)
-            self.dismiss(animated: true)
+            if self.inEditingMode == false
             {
-                let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController") as! AlarmViewController
-                vc.lineNo = self.lineDropDown.selectedItem
-                vc.destination = self.dropDown.selectedItem
-                let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                if let window = scene?.windows.first
+                self.dismiss(animated: true)
                 {
-                    window.rootViewController = vc
-                    UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                    let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController") as! AlarmViewController
+                    vc.lineNo = self.lineDropDown.selectedItem
+                    vc.destination = self.dropDown.selectedItem
+                    let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                    if let window = scene?.windows.first
+                    {
+                        window.rootViewController = vc
+                        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                    }
                 }
+            }
+            else
+            {
+                self.deleteSubwayAlarm()
+                self.dismiss(animated: true)
             }
         }
     }
@@ -158,6 +180,21 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         {
             try realm.write({
                 realm.add(alarm, update: .modified)
+            })
+        }
+        catch let error
+        {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func deleteSubwayAlarm()
+    {
+        let str = "\(destination!)\(lineNo!)_\(prevStation!)"
+        do
+        {
+            try realm.write({
+                realm.delete(realm.objects(SubwayAlarmData.self).filter("compoundKey=%@", str))
             })
         }
         catch let error

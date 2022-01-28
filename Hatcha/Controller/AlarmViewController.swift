@@ -10,7 +10,7 @@ import Speech
 import AudioKit
 import CoreAudioKit
 import Accelerate
-
+import AudioToolbox
 
 class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeechRecognitionTaskDelegate
 {
@@ -61,7 +61,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         
         speechRecognizer.delegate = self
         requestPermission()
-        
+
 //        let audioURL = Bundle.main.url(forResource: "audiotest", withExtension: "m4a")
         do
         {
@@ -96,10 +96,10 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             let recordingFormat = inputNode.outputFormat(forBus: 0)
             inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat)
             { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-                for i in 0..<Int(buffer.frameCapacity)
-                {
-                    buffer.floatChannelData?.pointee[i] = (buffer.floatChannelData?.pointee[i])! * 1000.0
-                }
+//                for i in 0..<Int(buffer.frameCapacity)
+//                {
+//                    buffer.floatChannelData?.pointee[i] = (buffer.floatChannelData?.pointee[i])! * 1000.0
+//                }
                 self.request.append(buffer)
                 if self.shouldStopRecording == false
                 {
@@ -111,16 +111,6 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             //MARK: - Uncomment to play normalized audio
 //            let readBuffer = AVAudioPCMBuffer.init(pcmFormat: audioFile.processingFormat, frameCapacity: AVAudioFrameCount(audioFile.length))!
 //            try audioFile.read(into: readBuffer)
-//
-//            for i in 0..<Int(readBuffer.frameCapacity)
-//            {
-//                readBuffer.floatChannelData?.pointee[i] = (readBuffer.floatChannelData?.pointee[i])! * 100.0
-//            }
-            
-//            self.audioFilePlayer.installTap(onBus: 0, bufferSize: 1024, format: nil)
-//            { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-//                self.request.append(buffer)
-//            }
 
             self.startSpeechRecognition()
             timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true)
@@ -165,6 +155,9 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         let alert = UIAlertController(title: "알람을 멈추시겠습니까?", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "예", style: .default)
         { (action) in
+            self.task.finish()
+            self.task.cancel()
+            self.task = nil
             self.request.endAudio()
             self.audioEngine.stop()
             self.audioEngine.inputNode.removeTap(onBus: 0)
@@ -251,6 +244,39 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         if !SRResult.isEmpty
         {
             currentStationLabel.text = "이번 역: \(SRResult[0])"
+            if SRResult[0] == destination
+            {
+                self.task.finish()
+                self.task.cancel()
+                self.task = nil
+                self.request.endAudio()
+                self.audioEngine.stop()
+                self.audioEngine.inputNode.removeTap(onBus: 0)
+                self.timer?.invalidate()
+                self.timer = nil
+                
+                let alert = UIAlertController(title: "\(self.destination!)역에 도착했습니다!", message: "", preferredStyle: .alert)
+                self.present(alert, animated: true, completion: nil)
+                DispatchQueue.main.asyncAfter(deadline: .now()+3.0)
+                {
+                    alert.dismiss(animated: true, completion: nil)
+                }
+                DispatchQueue.main.async
+                {
+                    for i in 0..<5
+                    {
+                        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                        sleep(1)
+                    }
+                }
+                let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MainViewController")
+                let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first
+                {
+                    window.rootViewController = vc
+                    UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                }
+            }
             SRResult = [String]()
         }
     }
@@ -261,7 +287,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         self.speechRecognizer.defaultTaskHint = .dictation
         if (self.speechRecognizer.isAvailable)
         {
-            self.speechRecognizer.recognitionTask(with: self.request, resultHandler:
+            task = self.speechRecognizer.recognitionTask(with: self.request, resultHandler:
             { result, error in
                 guard error == nil else
                 {

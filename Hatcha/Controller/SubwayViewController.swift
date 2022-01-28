@@ -29,6 +29,8 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
     var inEditingMode: Bool = false
     
     let realm = try! Realm()
+    var subwayAlarms: Results<SubwayAlarmData>?
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -50,6 +52,7 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         searchBar.backgroundImage = UIImage()
     
         filteredData = data
+        subwayAlarms = realm.objects(SubwayAlarmData.self)
         DropDown.appearance().textFont = UIFont.systemFont(ofSize: 15, weight: .semibold)
         dropDown.anchorView = searchBar
         dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!-12)
@@ -132,6 +135,19 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         {
             var alarm = SubwayAlarmData()
             alarm.setup(destination: self.searchBar.text!, line: (selectLineButton.titleLabel?.text)!, prevStation: prevStationSwitch.isOn==true ? "true":"false")
+            for el in subwayAlarms!
+            {
+                if el.compoundKey == alarm.compoundKey
+                {
+                    let alert = UIAlertController(title: "이미 존재하는 알람입니다!", message: "", preferredStyle: .alert)
+                    self.present(alert, animated: true, completion: nil)
+                    DispatchQueue.main.asyncAfter(deadline: .now()+1.0)
+                    {
+                        alert.dismiss(animated: true, completion: nil)
+                    }
+                    return
+                }
+            }
             saveSubwayAlarm(alarm)
             if self.inEditingMode == false
             {

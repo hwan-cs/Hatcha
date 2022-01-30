@@ -24,15 +24,14 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     var audioPlayerNode: AVAudioPlayerNode = AVAudioPlayerNode()
     var audioFile: AVAudioFile!
     
-
     @IBOutlet var listenButtonImageView: UIImageView!
     @IBOutlet var currentStationLabel: UILabel!
     @IBOutlet var destinationStationLabel: UILabel!
     @IBOutlet var stopAlarmButton: UIButton!
     
-    let data = Array(Set(Subway.stations.map{$0.value}.flatMap{$0}))
     var destination: String?
     var lineNo: String?
+    var prevStation: String?
     var SRResult = [String]()
     
     var timer: Timer?
@@ -40,6 +39,8 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     var shouldStopRecording: Bool = false
     var didPlay: Bool = false
     var containsSpeech: Bool = false
+    
+    var manager = LocalNotificationManager()
     
     override func viewDidLoad()
     {
@@ -61,7 +62,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         
         speechRecognizer.delegate = self
         requestPermission()
-
+        
 //        let audioURL = Bundle.main.url(forResource: "audiotest", withExtension: "m4a")
         do
         {
@@ -96,10 +97,10 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             let recordingFormat = inputNode.outputFormat(forBus: 0)
             inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat)
             { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-//                for i in 0..<Int(buffer.frameCapacity)
-//                {
-//                    buffer.floatChannelData?.pointee[i] = (buffer.floatChannelData?.pointee[i])! * 1000.0
-//                }
+                for i in 0..<Int(buffer.frameCapacity)
+                {
+                    buffer.floatChannelData?.pointee[i] = (buffer.floatChannelData?.pointee[i])! * 500.0
+                }
                 self.request.append(buffer)
                 if self.shouldStopRecording == false
                 {
@@ -178,6 +179,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         }))
         present(alert, animated: true, completion: nil)
     }
+    
     @objc func changeButtonStatus()
     {
         if self.speechDetected == true
@@ -234,6 +236,8 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     func determineStation(_ transcription: String)
     {
         let stationsForLineNo = Subway.stations[self.lineNo!]!
+        let indexOfDestination = stationsForLineNo.firstIndex(of: self.destination!)!
+        
         for station in stationsForLineNo
         {
             if transcription.filter({!$0.isWhitespace}).contains(station) && SRResult.isEmpty
@@ -255,6 +259,10 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
                 self.timer?.invalidate()
                 self.timer = nil
                 
+                let arrivalNotification = Notification(destination: self.destination!, title: "핫챠 도착 알림", body: "\(self.destination!)역에 도착했습니다!")
+                self.manager.notifications.append(arrivalNotification)
+                self.manager.schedule()
+                
                 let alert = UIAlertController(title: "\(self.destination!)역에 도착했습니다!", message: "", preferredStyle: .alert)
                 self.present(alert, animated: true, completion: nil)
                 DispatchQueue.main.asyncAfter(deadline: .now()+3.0)
@@ -275,6 +283,23 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
                 {
                     window.rootViewController = vc
                     UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                }
+            }
+            else if (SRResult[0] == stationsForLineNo[indexOfDestination-1] || SRResult[0] == stationsForLineNo[indexOfDestination+1]) && (prevStation == "true")
+            {
+                DispatchQueue.main.async
+                {
+                    for i in 0..<3
+                    {
+                        AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
+                        sleep(1)
+                    }
+                }
+                if self.manager.notifications.isEmpty == true
+                {
+                    let previousStationArrivalNotification = Notification(destination: SRResult[0], title: "핫챠 도착 알림", body: "\(SRResult[0])역에 도착했습니다! 다음 역에 목적지에 도착합니다.")
+                    self.manager.notifications.append(previousStationArrivalNotification)
+                    self.manager.schedule()
                 }
             }
             SRResult = [String]()

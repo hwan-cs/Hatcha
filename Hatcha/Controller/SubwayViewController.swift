@@ -143,9 +143,14 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
                     self.present(alert, animated: true, completion: nil)
                     DispatchQueue.main.asyncAfter(deadline: .now()+1.0)
                     {
-                        alert.dismiss(animated: true, completion: nil)
+                        alert.dismiss(animated: true)
+                        {
+                            self.dismiss(animated: true)
+                            {
+                                return
+                            }
+                        }
                     }
-                    return
                 }
             }
             saveSubwayAlarm(alarm)
@@ -156,6 +161,7 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
                     let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController") as! AlarmViewController
                     vc.lineNo = self.lineDropDown.selectedItem
                     vc.destination = self.dropDown.selectedItem
+                    vc.prevStation = self.prevStationSwitch.isOn==true ? "true":"false"
                     let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                     if let window = scene?.windows.first
                     {

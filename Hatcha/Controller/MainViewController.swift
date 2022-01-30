@@ -58,12 +58,14 @@ class MainViewController: UIViewController, UITableViewDelegate
         let index = sender.tag
         let lineNo = self.subwayAlarms![index].line
         let destination = self.subwayAlarms![index].destination
+        let prevStation = self.subwayAlarms![index].prevStation
         let alert = UIAlertController(title: "\(lineNo!) \(destination!)역이 도착역인 알람을 설정하겠습니까?", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "예", style: .default)
         { (action) in
             let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController") as! AlarmViewController
             vc.lineNo = lineNo
             vc.destination = destination
+            vc.prevStation = prevStation
             let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
             if let window = scene?.windows.first
             {
@@ -134,6 +136,7 @@ class MainViewController: UIViewController, UITableViewDelegate
         cell.setAlarmButton.tag = indexPath.row
         cell.titleLabel.attributedText = NSAttributedString(string: "\(self.subwayAlarms![indexPath.row].destination!), \(self.subwayAlarms![indexPath.row].line!)", attributes: [ .font: UIFont.systemFont(ofSize: 18.0, weight: .semibold), .foregroundColor: UIColor.white ])
         cell.setAlarmButton.addTarget(self, action: #selector(setAlarmTapped(sender:)), for: .touchUpInside)
+        cell.selectionStyle = .none
         return cell
     }
 }

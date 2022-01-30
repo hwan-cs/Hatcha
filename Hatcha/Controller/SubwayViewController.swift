@@ -133,47 +133,57 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         }
         else
         {
+            var flag = false
             var alarm = SubwayAlarmData()
             alarm.setup(destination: self.searchBar.text!, line: (selectLineButton.titleLabel?.text)!, prevStation: prevStationSwitch.isOn==true ? "true":"false")
-            for el in subwayAlarms!
+            if self.destination ?? "nil"  == self.searchBar.text! && self.lineNo ?? "nil" == (self.selectLineButton.titleLabel?.text)! && self.prevStation ?? "nil" == (prevStationSwitch.isOn==true ? "true":"false")
             {
-                if el.compoundKey == alarm.compoundKey
+                flag = true
+                self.dismiss(animated: true, completion: nil)
+            }
+            else
+            {
+                for el in subwayAlarms!
                 {
-                    let alert = UIAlertController(title: "이미 존재하는 알람입니다!", message: "", preferredStyle: .alert)
-                    self.present(alert, animated: true, completion: nil)
-                    DispatchQueue.main.asyncAfter(deadline: .now()+1.0)
+                    if el.compoundKey == alarm.compoundKey
                     {
-                        alert.dismiss(animated: true)
+                        flag = true
+                        let alert = UIAlertController(title: "이미 존재하는 알람입니다!", message: "", preferredStyle: .alert)
+                        self.present(alert, animated: true, completion: nil)
+                        DispatchQueue.main.asyncAfter(deadline: .now()+1.0)
                         {
-                            self.dismiss(animated: true)
+                            alert.dismiss(animated: true)
                             {
-                                return
+                                self.dismiss(animated: true, completion: nil)
                             }
                         }
                     }
                 }
+                saveSubwayAlarm(alarm)
             }
-            saveSubwayAlarm(alarm)
-            if self.inEditingMode == false
+            if flag == false
             {
-                self.dismiss(animated: true)
+                if self.inEditingMode == false
                 {
-                    let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController") as! AlarmViewController
-                    vc.lineNo = self.lineDropDown.selectedItem
-                    vc.destination = self.dropDown.selectedItem
-                    vc.prevStation = self.prevStationSwitch.isOn==true ? "true":"false"
-                    let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-                    if let window = scene?.windows.first
+                    self.dismiss(animated: true)
                     {
-                        window.rootViewController = vc
-                        UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController") as! AlarmViewController
+                        vc.lineNo = self.lineDropDown.selectedItem
+                        vc.destination = self.dropDown.selectedItem
+                        vc.prevStation = self.prevStationSwitch.isOn==true ? "true":"false"
+                        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                        if let window = scene?.windows.first
+                        {
+                            window.rootViewController = vc
+                            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                        }
                     }
                 }
-            }
-            else
-            {
-                self.deleteSubwayAlarm()
-                self.dismiss(animated: true)
+                else
+                {
+                    self.deleteSubwayAlarm()
+                    self.dismiss(animated: true)
+                }
             }
         }
     }

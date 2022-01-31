@@ -80,7 +80,7 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
             lineDropDown.dataSource = self.findKeyForValue(value: item, dictionary: Subway.stations)!
             lineDropDown.show()
         }
-        
+        dropDown.show()
         selectLineButton.layer.cornerRadius = 10
         selectLineButton.isUserInteractionEnabled = false
         

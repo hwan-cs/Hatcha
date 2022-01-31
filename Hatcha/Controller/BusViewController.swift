@@ -17,6 +17,10 @@ class BusViewController: UIViewController, UISearchBarDelegate
     @IBOutlet var selectLineButton: UIButton!
     @IBOutlet var previousStationAlarmView: UIView!
     
+    var dropDown = DropDown()
+    let data = Bus.stations
+    var filteredData: [String] = []
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -38,6 +42,22 @@ class BusViewController: UIViewController, UISearchBarDelegate
         searchBar.barTintColor = UIColor.clear
         searchBar.backgroundImage = UIImage()
         
+        filteredData = data
+        dropDown.anchorView = searchBar
+        dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!-12)
+        dropDown.backgroundColor = .white
+        dropDown.selectedTextColor = .white
+        dropDown.selectionBackgroundColor = UIColor.lightGray
+        dropDown.direction = .bottom
+        dropDown.cornerRadius = 10
+        dropDown.cellNib = UINib(nibName: K.bussCellNibName, bundle: nil)
+        dropDown.customCellConfiguration = { (index: Index, item: String, cell: DropDownCell) -> Void in
+            guard let cell = cell as? BusDropDownCell else { return }
+            cell.titleLabel.text = "zzz"
+         }
+        dropDown.show()
+
+        
         selectLineButton.layer.cornerRadius = 10
         selectLineButton.isUserInteractionEnabled = false
         
@@ -52,5 +72,14 @@ class BusViewController: UIViewController, UISearchBarDelegate
     @objc func onSaveTap(_ sender: UIBarButtonItem)
     {
         
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
+    {
+        filteredData = searchText.isEmpty ? data : data.filter({ (dat) -> Bool in
+            dat.range(of: searchText, options: .caseInsensitive) != nil
+        })
+        dropDown.dataSource = filteredData
+        dropDown.show()
     }
 }

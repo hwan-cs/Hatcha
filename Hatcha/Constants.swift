@@ -7,7 +7,9 @@
 struct K
 {
     static let cellIdentifier = "ReusableCell"
+    static let busCellIdentifier = "BusReusableCell"
     static let cellNibName = "MyTableViewCell"
+    static let bussCellNibName = "BusDropDownCell"
     static let subOrBusSegue = "subOrBus"
     static let subwayVC = "subwayViewController"
     static let busVC = "busViewController"

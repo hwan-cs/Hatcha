@@ -35,6 +35,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
+        
+        
     }
     
     func update()

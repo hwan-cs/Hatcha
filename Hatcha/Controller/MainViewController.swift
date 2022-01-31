@@ -8,11 +8,12 @@
 import UIKit
 import RealmSwift
 
-class MainViewController: UIViewController, UITableViewDelegate
+class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegate
 {
     @IBOutlet var makeAlarmButton: UIButton!
     @IBOutlet var tableView: UITableView!
     
+    static var shouldReloadTV: Bool = false
     var realm: Realm? = nil
     var subwayAlarms: Results<SubwayAlarmData>?
     
@@ -28,12 +29,19 @@ class MainViewController: UIViewController, UITableViewDelegate
         
         realm = try! Realm()
         loadAlarms()
+        
         self.navigationController?.navigationBar.topItem?.title = "핫차"
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = .clear
     }
+    
+    func update()
+    {
+        self.tableView.reloadData()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
     {
         if segue.identifier == K.subOrBusSegue
@@ -88,6 +96,7 @@ class MainViewController: UIViewController, UITableViewDelegate
         vc.lineNo = subwayAlarms![indexPath.row].line
         vc.prevStation = subwayAlarms![indexPath.row].prevStation
         vc.inEditingMode = true
+        vc.updateTVDelegate = self
         self.present(vc, animated: true)
     }
     

@@ -61,7 +61,7 @@ class SelectionViewController: UIViewController
         { finished in
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: K.subwayVC)
+            let vc = storyboard.instantiateViewController(withIdentifier: K.busVC)
             self.present(vc, animated: true)
             {
                 self.subway.alpha = 1.0

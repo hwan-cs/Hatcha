@@ -415,7 +415,140 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pAc-Fx-mtN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2979.7101449275365" y="109.82142857142857"/>
+            <point key="canvasLocation" x="2801" y="110"/>
+        </scene>
+        <!--Bus View Controller-->
+        <scene sceneID="V1K-WD-57a">
+            <objects>
+                <viewController storyboardIdentifier="busViewController" id="rd0-GU-eN0" customClass="BusViewController" customModule="Hatcha" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="l9J-aw-ePS">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backgroundImg" translatesAutoresizingMaskIntoConstraints="NO" id="DcW-rP-Uu1">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zgr-Ai-NrT">
+                                <rect key="frame" x="91" y="237" width="200" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SL4-AN-Lax">
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="44"/>
+                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain">
+                                            <attributedString key="attributedTitle">
+                                                <fragment content="도착 역을 선택하세요...">
+                                                    <attributes>
+                                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                                        <font key="NSFont" size="15" name="AppleSDGothicNeo-SemiBold"/>
+                                                    </attributes>
+                                                </fragment>
+                                            </attributedString>
+                                            <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="selectLineButtonAction:" destination="8jk-jK-QDN" eventType="touchUpInside" id="7h5-6R-LXl"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="0vt-u5-TOq"/>
+                                    <constraint firstAttribute="width" constant="200" id="BBt-cr-kk7"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="GC6-Mg-MqZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="SL4-AN-Lax" secondAttribute="trailing" id="I1a-XU-8nm"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="200" id="Qej-5V-uUX"/>
+                                    <constraint firstItem="SL4-AN-Lax" firstAttribute="leading" secondItem="Zgr-Ai-NrT" secondAttribute="leading" id="djG-Pv-63D"/>
+                                    <constraint firstItem="SL4-AN-Lax" firstAttribute="top" secondItem="Zgr-Ai-NrT" secondAttribute="top" id="dz5-yr-2Rb"/>
+                                    <constraint firstAttribute="bottom" secondItem="SL4-AN-Lax" secondAttribute="bottom" id="hzU-vG-9SV"/>
+                                </constraints>
+                            </view>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="3N9-in-8hJ">
+                                <rect key="frame" x="121" y="143" width="273" height="44"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="JCb-RW-1Pm"/>
+                                </constraints>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="버스 노선명:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PnK-mm-dFd">
+                                <rect key="frame" x="20" y="143" width="98" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="b4U-cn-OLt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="도착 역:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQe-wK-bdh">
+                                <rect key="frame" x="20" y="237" width="63" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="gDT-Gh-KLO"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AppleSDGothicNeo-SemiBold" family="Apple SD Gothic Neo" pointSize="20"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k04-db-kwy">
+                                <rect key="frame" x="20" y="331" width="374" height="60"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="전 역 도착 알림 받기" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lYi-45-ALU">
+                                        <rect key="frame" x="16" y="8" width="134.5" height="44"/>
+                                        <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="oi9-Du-bof">
+                                        <rect key="frame" x="309" y="15" width="51" height="30"/>
+                                    </switch>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="oi9-Du-bof" firstAttribute="top" secondItem="k04-db-kwy" secondAttribute="top" constant="15" id="G2A-fl-DMY"/>
+                                    <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="oi9-Du-bof" secondAttribute="leading" constant="65" id="MnR-fJ-KXr"/>
+                                    <constraint firstAttribute="height" constant="60" id="Pvu-ig-bYN"/>
+                                    <constraint firstItem="lYi-45-ALU" firstAttribute="leading" secondItem="k04-db-kwy" secondAttribute="leading" constant="16" id="RMU-C0-MMi"/>
+                                    <constraint firstAttribute="trailing" secondItem="oi9-Du-bof" secondAttribute="trailing" constant="16" id="SXV-yA-V8h"/>
+                                    <constraint firstAttribute="bottom" secondItem="lYi-45-ALU" secondAttribute="bottom" constant="8" id="gl5-kH-o8f"/>
+                                    <constraint firstItem="oi9-Du-bof" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="lYi-45-ALU" secondAttribute="trailing" constant="8" symbolic="YES" id="wrt-E9-dOA"/>
+                                    <constraint firstAttribute="bottom" secondItem="oi9-Du-bof" secondAttribute="bottom" constant="15" id="yju-Dq-V5p"/>
+                                    <constraint firstItem="lYi-45-ALU" firstAttribute="top" secondItem="k04-db-kwy" secondAttribute="top" constant="8" id="ypS-nP-9wM"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="f4K-ba-d3q"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="DcW-rP-Uu1" firstAttribute="top" secondItem="l9J-aw-ePS" secondAttribute="top" id="0eE-jX-iEI"/>
+                            <constraint firstAttribute="bottom" secondItem="DcW-rP-Uu1" secondAttribute="bottom" id="1bb-e3-s2g"/>
+                            <constraint firstItem="dQe-wK-bdh" firstAttribute="leading" secondItem="f4K-ba-d3q" secondAttribute="leading" constant="20" id="DnH-1k-Pql"/>
+                            <constraint firstItem="DcW-rP-Uu1" firstAttribute="leading" secondItem="f4K-ba-d3q" secondAttribute="leading" id="MHY-47-Koc"/>
+                            <constraint firstItem="3N9-in-8hJ" firstAttribute="leading" secondItem="PnK-mm-dFd" secondAttribute="trailing" constant="3" id="Spc-e3-2yV"/>
+                            <constraint firstItem="f4K-ba-d3q" firstAttribute="trailing" secondItem="k04-db-kwy" secondAttribute="trailing" constant="20" id="VOQ-89-uUn"/>
+                            <constraint firstItem="Zgr-Ai-NrT" firstAttribute="leading" secondItem="dQe-wK-bdh" secondAttribute="trailing" constant="8" id="VU7-yX-477"/>
+                            <constraint firstItem="PnK-mm-dFd" firstAttribute="leading" secondItem="f4K-ba-d3q" secondAttribute="leading" constant="20" id="WZ1-Gy-Tj3"/>
+                            <constraint firstItem="Zgr-Ai-NrT" firstAttribute="top" secondItem="3N9-in-8hJ" secondAttribute="bottom" constant="50" id="ZM5-a8-Cdb"/>
+                            <constraint firstItem="f4K-ba-d3q" firstAttribute="trailing" secondItem="3N9-in-8hJ" secondAttribute="trailing" constant="20" id="dVW-eG-vnX"/>
+                            <constraint firstItem="3N9-in-8hJ" firstAttribute="top" secondItem="f4K-ba-d3q" secondAttribute="top" constant="99" id="gqT-Qu-qRN"/>
+                            <constraint firstItem="DcW-rP-Uu1" firstAttribute="trailing" secondItem="f4K-ba-d3q" secondAttribute="trailing" id="hFz-dN-0Aj"/>
+                            <constraint firstItem="dQe-wK-bdh" firstAttribute="top" secondItem="PnK-mm-dFd" secondAttribute="bottom" constant="50" id="nY7-t3-uYA"/>
+                            <constraint firstItem="k04-db-kwy" firstAttribute="top" secondItem="Zgr-Ai-NrT" secondAttribute="bottom" constant="50" id="u5c-gn-hsK"/>
+                            <constraint firstItem="PnK-mm-dFd" firstAttribute="top" secondItem="f4K-ba-d3q" secondAttribute="top" constant="99" id="xUT-XS-atq"/>
+                            <constraint firstItem="k04-db-kwy" firstAttribute="leading" secondItem="f4K-ba-d3q" secondAttribute="leading" constant="20" id="zAv-kS-9g1"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="previousStationAlarmView" destination="k04-db-kwy" id="zfe-ey-Sme"/>
+                        <outlet property="searchBar" destination="3N9-in-8hJ" id="6Lz-n4-mfL"/>
+                        <outlet property="selectLineButton" destination="SL4-AN-Lax" id="qgG-om-VkC"/>
+                        <outlet property="selectLineView" destination="Zgr-Ai-NrT" id="wz9-My-6hr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QOj-fZ-hBb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3605.7971014492755" y="109.82142857142857"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="AAS-om-UNk">

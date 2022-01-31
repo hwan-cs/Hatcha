@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1A36EB1527A6810100E6F507 /* LocalNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A36EB1427A6810000E6F507 /* LocalNotificationManager.swift */; };
+		1A36EB1727A7D3F000E6F507 /* BusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A36EB1627A7D3F000E6F507 /* BusViewController.swift */; };
+		1A36EB1927A7D4E100E6F507 /* Bus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A36EB1827A7D4E100E6F507 /* Bus.swift */; };
 		1A78EC47277EF05B00AEED90 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC46277EF05B00AEED90 /* AppDelegate.swift */; };
 		1A78EC4B277EF05B00AEED90 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC4A277EF05B00AEED90 /* MainViewController.swift */; };
 		1A78EC4E277EF05B00AEED90 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A78EC4C277EF05B00AEED90 /* Main.storyboard */; };
@@ -41,6 +43,8 @@
 
 /* Begin PBXFileReference section */
 		1A36EB1427A6810000E6F507 /* LocalNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotificationManager.swift; sourceTree = "<group>"; };
+		1A36EB1627A7D3F000E6F507 /* BusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusViewController.swift; sourceTree = "<group>"; };
+		1A36EB1827A7D4E100E6F507 /* Bus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bus.swift; sourceTree = "<group>"; };
 		1A78EC43277EF05B00AEED90 /* Hatcha.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hatcha.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A78EC46277EF05B00AEED90 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A78EC4A277EF05B00AEED90 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -78,7 +82,6 @@
 		1A78EC3A277EF05B00AEED90 = {
 			isa = PBXGroup;
 			children = (
-				1A78EC5C277EFA0E00AEED90 /* Model */,
 				1A78EC45277EF05B00AEED90 /* Hatcha */,
 				1A78EC44277EF05B00AEED90 /* Products */,
 				26EF07676E23852404C944C5 /* Pods */,
@@ -100,6 +103,7 @@
 				1AD6D16F2791E17100CDBCC3 /* test2.m4a */,
 				1AD6D1732792F31B00CDBCC3 /* audiotest.m4a */,
 				1A78EC46277EF05B00AEED90 /* AppDelegate.swift */,
+				1A78EC5C277EFA0E00AEED90 /* Model */,
 				1A78EC5A277EF9F900AEED90 /* View */,
 				1A78EC5B277EFA0400AEED90 /* Controller */,
 				1A78EC4F277EF05E00AEED90 /* Assets.xcassets */,
@@ -127,6 +131,7 @@
 				1A78EC6527820C6C00AEED90 /* SelectionViewController.swift */,
 				1A78EC67278214CD00AEED90 /* SubwayViewController.swift */,
 				1ABD2AC22785FE0600AF27C2 /* AlarmViewController.swift */,
+				1A36EB1627A7D3F000E6F507 /* BusViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -137,6 +142,7 @@
 				1ABD2AC02784A09800AF27C2 /* Subway.swift */,
 				1AFD2C7C279D5C05006E3612 /* SubwayAlarmData.swift */,
 				1A36EB1427A6810000E6F507 /* LocalNotificationManager.swift */,
+				1A36EB1827A7D4E100E6F507 /* Bus.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -278,12 +284,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				1ABD2AC32785FE0700AF27C2 /* AlarmViewController.swift in Sources */,
+				1A36EB1927A7D4E100E6F507 /* Bus.swift in Sources */,
 				1A78EC6627820C6D00AEED90 /* SelectionViewController.swift in Sources */,
 				1A36EB1527A6810100E6F507 /* LocalNotificationManager.swift in Sources */,
 				1AFD2C7D279D5C05006E3612 /* SubwayAlarmData.swift in Sources */,
 				1A78EC68278214CD00AEED90 /* SubwayViewController.swift in Sources */,
 				1A78EC642781B1DA00AEED90 /* Constants.swift in Sources */,
 				1A78EC4B277EF05B00AEED90 /* MainViewController.swift in Sources */,
+				1A36EB1727A7D3F000E6F507 /* BusViewController.swift in Sources */,
 				1ABD2AC12784A09800AF27C2 /* Subway.swift in Sources */,
 				1A78EC47277EF05B00AEED90 /* AppDelegate.swift in Sources */,
 				1A78EC5F2781AC5000AEED90 /* MyTableViewCell.swift in Sources */,

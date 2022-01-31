@@ -10,7 +10,7 @@ struct K
     static let cellNibName = "MyTableViewCell"
     static let subOrBusSegue = "subOrBus"
     static let subwayVC = "subwayViewController"
-    
+    static let busVC = "busViewController"
 //    struct BrandColors
 //    {
 //        static let purple = "BrandPurple"

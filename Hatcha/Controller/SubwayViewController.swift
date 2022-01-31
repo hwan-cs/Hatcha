@@ -9,6 +9,11 @@ import UIKit
 import DropDown
 import RealmSwift
 
+protocol UpdateTVDelegate: AnyObject
+{
+    func update()
+}
+
 class SubwayViewController: UIViewController, UISearchBarDelegate
 {
     @IBOutlet var searchBar: UISearchBar!
@@ -30,6 +35,8 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
     
     let realm = try! Realm()
     var subwayAlarms: Results<SubwayAlarmData>?
+    
+    var updateTVDelegate: UpdateTVDelegate?
     
     override func viewDidLoad()
     {
@@ -160,6 +167,7 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
                     }
                 }
                 saveSubwayAlarm(alarm)
+                self.updateTVDelegate?.update()
             }
             if flag == false
             {
@@ -182,6 +190,7 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
                 else
                 {
                     self.deleteSubwayAlarm()
+                    self.updateTVDelegate?.update()
                     self.dismiss(animated: true)
                 }
             }

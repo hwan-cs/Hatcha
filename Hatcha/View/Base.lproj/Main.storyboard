@@ -540,6 +540,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="prevStationSwitch" destination="oi9-Du-bof" id="GZ9-Ks-aKe"/>
                         <outlet property="previousStationAlarmView" destination="k04-db-kwy" id="zfe-ey-Sme"/>
                         <outlet property="searchBar" destination="3N9-in-8hJ" id="6Lz-n4-mfL"/>
                         <outlet property="selectLineButton" destination="SL4-AN-Lax" id="qgG-om-VkC"/>

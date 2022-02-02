@@ -22,6 +22,18 @@ class BusViewController: UIViewController, UISearchBarDelegate
     let data = Bus.stations
     var filteredData: [String] = []
     
+    var destination:String?
+    var lineNo:String?
+    var prevStation:String?
+    var inEditingMode: Bool = false
+    
+    let realm = try! Realm()
+    var busAlarms: Results<BusAlarmData>?
+    
+    var updateTVDelegate: UpdateTVDelegate?
+    
+    @IBOutlet var prevStationSwitch: UISwitch!
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -43,6 +55,7 @@ class BusViewController: UIViewController, UISearchBarDelegate
         searchBar.barTintColor = UIColor.clear
         searchBar.backgroundImage = UIImage()
         
+        busAlarms = realm.objects(BusAlarmData.self)
         filteredData = data
         dropDown.anchorView = searchBar
         dropDown.bottomOffset = CGPoint(x: 0, y:(dropDown.anchorView?.plainView.bounds.height)!-12)
@@ -116,6 +129,13 @@ class BusViewController: UIViewController, UISearchBarDelegate
         selectLineButton.isUserInteractionEnabled = false
         
         previousStationAlarmView.layer.cornerRadius = 16
+        
+        if destination != nil && lineNo != nil && prevStation != nil
+        {
+            searchBar.text = destination!
+            selectLineButton.setTitle(lineNo!, for: .normal)
+            prevStationSwitch.isOn = (prevStation == "true")
+        }
     }
     
     func findStationsForBus(_ bus: String) -> [String]
@@ -168,11 +188,120 @@ class BusViewController: UIViewController, UISearchBarDelegate
     
     @objc func onSaveTap(_ sender: UIBarButtonItem)
     {
-        
+//        //save alarm info in Realm database
+        if selectLineButton.titleLabel?.text == "도착 역을 선택하세요..."
+        {
+            let alert = UIAlertController(title: "도착 역을 선택하세요!", message: "", preferredStyle: .alert)
+            self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now()+1.0)
+            {
+                alert.dismiss(animated: true, completion: nil)
+            }
+        }
+        else if selectLineButton.titleLabel?.text == "노선을 선택하세요..."
+        {
+            let alert = UIAlertController(title: "노선을 선택하세요!", message: "", preferredStyle: .alert)
+            self.present(alert, animated: true, completion: nil)
+            DispatchQueue.main.asyncAfter(deadline: .now()+1.0)
+            {
+                alert.dismiss(animated: true, completion: nil)
+            }
+        }
+        else
+        {
+            var flag = false
+            var alarm = BusAlarmData()
+            alarm.setup(destination: self.searchBar.text!, line: (selectLineButton.titleLabel?.text)!, prevStation: prevStationSwitch.isOn==true ? "true":"false")
+            if self.destination ?? "nil"  == self.searchBar.text! && self.lineNo ?? "nil" == (self.selectLineButton.titleLabel?.text)! && self.prevStation ?? "nil" == (prevStationSwitch.isOn==true ? "true":"false")
+            {
+                flag = true
+                self.dismiss(animated: true, completion: nil)
+            }
+            else
+            {
+                for el in busAlarms!
+                {
+                    if el.compoundKey == alarm.compoundKey
+                    {
+                        flag = true
+                        let alert = UIAlertController(title: "이미 존재하는 알람입니다!", message: "", preferredStyle: .alert)
+                        self.present(alert, animated: true, completion: nil)
+                        DispatchQueue.main.asyncAfter(deadline: .now()+1.0)
+                        {
+                            alert.dismiss(animated: true)
+                            {
+                                self.dismiss(animated: true, completion: nil)
+                            }
+                        }
+                    }
+                }
+                saveBusAlarm(alarm)
+                self.updateTVDelegate?.update()
+            }
+            if flag == false
+            {
+                if self.inEditingMode == false
+                {
+                    self.dismiss(animated: true)
+                    {
+                        let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "AlarmViewController") as! AlarmViewController
+                        vc.lineNo = self.dropDown.selectedItem
+                        vc.destination = self.lineDropDown.selectedItem
+                        vc.prevStation = self.prevStationSwitch.isOn==true ? "true":"false"
+                        let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                        if let window = scene?.windows.first
+                        {
+                            window.rootViewController = vc
+                            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+                        }
+                    }
+                }
+                else
+                {
+                    self.deleteBusAlarm()
+                    self.updateTVDelegate?.update()
+                    self.dismiss(animated: true)
+                }
+            }
+        }
+    }
+    
+    func saveBusAlarm(_ alarm: BusAlarmData)
+    {
+        do
+        {
+            try realm.write({
+                realm.add(alarm, update: .modified)
+            })
+        }
+        catch let error
+        {
+            print(error.localizedDescription)
+        }
+    }
+    
+    func deleteBusAlarm()
+    {
+        let str = "BUS_\(destination!)\(lineNo!)_\(prevStation!)"
+        do
+        {
+            try realm.write({
+                realm.delete(realm.objects(BusAlarmData.self).filter("compoundKey=%@", str))
+            })
+        }
+        catch let error
+        {
+            print(error.localizedDescription)
+        }
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
     {
+        selectLineButton.isUserInteractionEnabled = false
+        selectLineButton.backgroundColor = .lightGray
+        selectLineButton.setTitleColor(.white, for: .normal)
+        selectLineButton.setTitle("도착 역을 선택하세요...", for: .normal)
+
         filteredData = searchText.isEmpty ? data : data.filter({ (dat) -> Bool in
             dat.range(of: searchText, options: .caseInsensitive) != nil
         })

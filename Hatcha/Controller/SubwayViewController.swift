@@ -68,6 +68,21 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
         dropDown.selectionBackgroundColor = UIColor.lightGray
         dropDown.direction = .bottom
         dropDown.cornerRadius = 10
+        dropDown.cellNib = UINib(nibName: K.bussCellNibName, bundle: nil)
+        dropDown.customCellConfiguration = { (index: Index, item: String, cell: DropDownCell) -> Void in
+            guard let cell = cell as? BusDropDownCell else { return }
+            if let foo = self.findKeyForValue(value: item, dictionary: Subway.stations)
+            {
+                if foo.count == 1
+                {
+                    cell.myImageview.image = UIImage(named: foo[0])
+                }
+                else
+                {
+                    cell.myImageview.image = UIImage(named: "환승.png")
+                }
+            }
+         }
         
         dropDown.selectionAction =
         { [unowned self] (index: Int, item: String) in

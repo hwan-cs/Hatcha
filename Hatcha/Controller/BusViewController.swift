@@ -18,6 +18,7 @@ class BusViewController: UIViewController, UISearchBarDelegate
     @IBOutlet var previousStationAlarmView: UIView!
     
     var dropDown = DropDown()
+    var lineDropDown = DropDown()
     let data = Bus.stations
     var filteredData: [String] = []
     
@@ -53,16 +54,111 @@ class BusViewController: UIViewController, UISearchBarDelegate
         dropDown.cellNib = UINib(nibName: K.bussCellNibName, bundle: nil)
         dropDown.customCellConfiguration = { (index: Index, item: String, cell: DropDownCell) -> Void in
             guard let cell = cell as? BusDropDownCell else { return }
-            cell.optionLabel.font = UIFont.systemFont(ofSize: 18.0, weight: .semibold)
+            cell.optionLabel.font = UIFont.systemFont(ofSize: 16.0, weight: .semibold)
             cell.optionLabel.text = item
-            cell.myImageview.image = UIImage(named: "red_bus.png")
+            
+            //버스 번호가 2/3자리라면 노란/파란 버스이다
+            if item.count <= 3
+            {
+                //노란 버스는 총 4개
+                if item == "01A" || item == "01B" || item == "02" || item == "04"
+                {
+                    cell.myImageview.image = UIImage(named: "yellow_bus.png")
+                }
+                else
+                {
+                    cell.myImageview.image = UIImage(named: "blue_bus.png")
+                }
+            }
+            else //버스 번호가 4자리라면 초록/빨간 버스이다
+            {
+                if item == "110A고려대" || item == "110B국민대"
+                {
+                    cell.myImageview.image = UIImage(named: "blue_bus.png")
+                }
+                else if item[item.startIndex] == "9"
+                {
+                    cell.myImageview.image = UIImage(named: "red_bus.png")
+                }
+                else
+                {
+                    cell.myImageview.image = UIImage(named: "green_bus.png")
+                }
+            }
          }
-        dropDown.show()
+        
+        dropDown.selectionAction =
+        { [unowned self] (index: Int, item: String) in
+            searchBar.text = item
+            searchBar.endEditing(true)
+            selectLineButton.isUserInteractionEnabled = true
+            selectLineButton.backgroundColor = .white
+            selectLineButton.setTitleColor(.black, for: .normal)
+            selectLineButton.setTitle("도착역을 선택하세요...", for: .normal)
+            lineDropDown.dataSource = findStationsForBus(item)
+            lineDropDown.show()
+        }
 
+        lineDropDown.anchorView = selectLineView
+        lineDropDown.bottomOffset = CGPoint(x: 0, y:(lineDropDown.anchorView?.plainView.bounds.height)!+2)
+        lineDropDown.backgroundColor = .white
+        lineDropDown.selectedTextColor = .white
+        lineDropDown.selectionBackgroundColor = UIColor.lightGray
+        lineDropDown.direction = .bottom
+        lineDropDown.cornerRadius = 10
+        
+        lineDropDown.selectionAction =
+        { [unowned self] (index: Int, item: String) in
+            selectLineButton.setTitle(item, for: .normal)
+        }
+        
         selectLineButton.layer.cornerRadius = 10
         selectLineButton.isUserInteractionEnabled = false
         
         previousStationAlarmView.layer.cornerRadius = 16
+    }
+    
+    func findStationsForBus(_ bus: String) -> [String]
+    {
+        var result = [String]()
+        do
+        {
+            let path = Bundle.main.path(forResource: "seoul_bus_stations", ofType: "txt")
+            let contents = try String(contentsOfFile: path!)
+            let indexOfBus = contents.index(of: bus)!
+            let substr = contents[indexOfBus...]
+            let start = substr.firstIndex(of: "[")!
+            let end = substr.firstIndex(of: "]")!
+            let busStations = substr[start...end]
+            
+            var flag = false
+            var str = ""
+            for ch in busStations
+            {
+                if ch == "\"" && flag == false
+                {
+                    flag = true
+                }
+                else if ch == "\"" && flag == true
+                {
+                    flag = false
+                }
+                if flag == true && (ch != "[" && ch != "]" && ch != "," && ch != " " && ch != "\"")
+                {
+                    str.append(ch)
+                }
+                else if flag == false && ch == "\""
+                {
+                    result.append(str)
+                    str = ""
+                }
+            }
+        }
+        catch let error
+        {
+            print(error.localizedDescription)
+        }
+        return result
     }
     
     @objc func onCancelTap(_ sender: UIBarButtonItem)
@@ -82,5 +178,60 @@ class BusViewController: UIViewController, UISearchBarDelegate
         })
         dropDown.dataSource = filteredData
         dropDown.show()
+    }
+}
+extension StringProtocol
+{
+    func index<S: StringProtocol>(of string: S, options: String.CompareOptions = []) -> Index?
+    {
+        range(of: string, options: options)?.lowerBound
+    }
+    func endIndex<S: StringProtocol>(of string: S, options: String.CompareOptions = []) -> Index?
+    {
+        range(of: string, options: options)?.upperBound
+    }
+    func indices<S: StringProtocol>(of string: S, options: String.CompareOptions = []) -> [Index]
+    {
+        ranges(of: string, options: options).map(\.lowerBound)
+    }
+    func ranges<S: StringProtocol>(of string: S, options: String.CompareOptions = []) -> [Range<Index>]
+    {
+        var result: [Range<Index>] = []
+        var startIndex = self.startIndex
+        while startIndex < endIndex,
+            let range = self[startIndex...]
+                .range(of: string, options: options)
+        {
+                result.append(range)
+                startIndex = range.lowerBound < range.upperBound ? range.upperBound :
+                    index(range.lowerBound, offsetBy: 1, limitedBy: endIndex) ?? endIndex
+        }
+        return result
+    }
+}
+extension String
+{
+    func index(from: Int) -> Index
+    {
+        return self.index(startIndex, offsetBy: from)
+    }
+
+    func substring(from: Int) -> String
+    {
+        let fromIndex = index(from: from)
+        return String(self[fromIndex...])
+    }
+
+    func substring(to: Int) -> String
+    {
+        let toIndex = index(from: to)
+        return String(self[..<toIndex])
+    }
+
+    func substring(with r: Range<Int>) -> String
+    {
+        let startIndex = index(from: r.lowerBound)
+        let endIndex = index(from: r.upperBound)
+        return String(self[startIndex..<endIndex])
     }
 }

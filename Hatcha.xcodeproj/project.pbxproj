@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1A29C11E27A8302500CF16F2 /* seoul_bus_stations.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1A29C11D27A8302400CF16F2 /* seoul_bus_stations.txt */; };
-		1A29C12327A835CB00CF16F2 /* BusDropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A29C12127A835CB00CF16F2 /* BusDropDownCell.swift */; };
-		1A29C12427A835CB00CF16F2 /* BusDropDownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A29C12227A835CB00CF16F2 /* BusDropDownCell.xib */; };
+		1A29C12327A835CB00CF16F2 /* DropDownCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A29C12127A835CB00CF16F2 /* DropDownCell.swift */; };
+		1A29C12427A835CB00CF16F2 /* DropDownCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1A29C12227A835CB00CF16F2 /* DropDownCell.xib */; };
 		1A36EB1527A6810100E6F507 /* LocalNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A36EB1427A6810000E6F507 /* LocalNotificationManager.swift */; };
 		1A36EB1727A7D3F000E6F507 /* BusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A36EB1627A7D3F000E6F507 /* BusViewController.swift */; };
 		1A36EB1927A7D4E100E6F507 /* Bus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A36EB1827A7D4E100E6F507 /* Bus.swift */; };
@@ -46,8 +46,8 @@
 
 /* Begin PBXFileReference section */
 		1A29C11D27A8302400CF16F2 /* seoul_bus_stations.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = seoul_bus_stations.txt; sourceTree = "<group>"; };
-		1A29C12127A835CB00CF16F2 /* BusDropDownCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusDropDownCell.swift; sourceTree = "<group>"; };
-		1A29C12227A835CB00CF16F2 /* BusDropDownCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BusDropDownCell.xib; sourceTree = "<group>"; };
+		1A29C12127A835CB00CF16F2 /* DropDownCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownCell.swift; sourceTree = "<group>"; };
+		1A29C12227A835CB00CF16F2 /* DropDownCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DropDownCell.xib; sourceTree = "<group>"; };
 		1A36EB1427A6810000E6F507 /* LocalNotificationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalNotificationManager.swift; sourceTree = "<group>"; };
 		1A36EB1627A7D3F000E6F507 /* BusViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusViewController.swift; sourceTree = "<group>"; };
 		1A36EB1827A7D4E100E6F507 /* Bus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bus.swift; sourceTree = "<group>"; };
@@ -127,8 +127,8 @@
 				1A78EC4C277EF05B00AEED90 /* Main.storyboard */,
 				1A78EC5D2781AC4F00AEED90 /* MyTableViewCell.swift */,
 				1A78EC5E2781AC4F00AEED90 /* MyTableViewCell.xib */,
-				1A29C12127A835CB00CF16F2 /* BusDropDownCell.swift */,
-				1A29C12227A835CB00CF16F2 /* BusDropDownCell.xib */,
+				1A29C12127A835CB00CF16F2 /* DropDownCell.swift */,
+				1A29C12227A835CB00CF16F2 /* DropDownCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -237,7 +237,7 @@
 				1A78EC53277EF05E00AEED90 /* LaunchScreen.storyboard in Resources */,
 				1A78EC602781AC5000AEED90 /* MyTableViewCell.xib in Resources */,
 				1A78EC50277EF05E00AEED90 /* Assets.xcassets in Resources */,
-				1A29C12427A835CB00CF16F2 /* BusDropDownCell.xib in Resources */,
+				1A29C12427A835CB00CF16F2 /* DropDownCell.xib in Resources */,
 				1A78EC4E277EF05B00AEED90 /* Main.storyboard in Resources */,
 				1A29C11E27A8302500CF16F2 /* seoul_bus_stations.txt in Resources */,
 				1AD6D1702791E17100CDBCC3 /* test2.m4a in Resources */,
@@ -298,7 +298,7 @@
 				1A36EB1927A7D4E100E6F507 /* Bus.swift in Sources */,
 				1A78EC6627820C6D00AEED90 /* SelectionViewController.swift in Sources */,
 				1A36EB1527A6810100E6F507 /* LocalNotificationManager.swift in Sources */,
-				1A29C12327A835CB00CF16F2 /* BusDropDownCell.swift in Sources */,
+				1A29C12327A835CB00CF16F2 /* DropDownCell.swift in Sources */,
 				1AFD2C7D279D5C05006E3612 /* SubwayAlarmData.swift in Sources */,
 				1A78EC68278214CD00AEED90 /* SubwayViewController.swift in Sources */,
 				1A78EC642781B1DA00AEED90 /* Constants.swift in Sources */,

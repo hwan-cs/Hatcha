@@ -53,11 +53,12 @@ class BusViewController: UIViewController, UISearchBarDelegate
         dropDown.cellNib = UINib(nibName: K.bussCellNibName, bundle: nil)
         dropDown.customCellConfiguration = { (index: Index, item: String, cell: DropDownCell) -> Void in
             guard let cell = cell as? BusDropDownCell else { return }
-            cell.titleLabel.text = "zzz"
+            cell.optionLabel.font = UIFont.systemFont(ofSize: 18.0, weight: .semibold)
+            cell.optionLabel.text = item
+            cell.myImageview.image = UIImage(named: "red_bus.png")
          }
         dropDown.show()
 
-        
         selectLineButton.layer.cornerRadius = 10
         selectLineButton.isUserInteractionEnabled = false
         

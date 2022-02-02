@@ -10,11 +10,11 @@ import DropDown
 
 class BusDropDownCell: DropDownCell
 {
-
-    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var myImageview: UIImageView!
     override func awakeFromNib()
     {
         super.awakeFromNib()
+        myImageview.contentMode = .scaleAspectFit
         // Initialization code
     }
 

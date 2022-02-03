@@ -189,18 +189,18 @@ class BusViewController: UIViewController, UISearchBarDelegate
     @objc func onSaveTap(_ sender: UIBarButtonItem)
     {
 //        //save alarm info in Realm database
-        if selectLineButton.titleLabel?.text == "도착 역을 선택하세요..."
+        if selectLineButton.titleLabel?.text == "버스 노선을 선택하세요..."
         {
-            let alert = UIAlertController(title: "도착 역을 선택하세요!", message: "", preferredStyle: .alert)
+            let alert = UIAlertController(title: "버스 노선을 선택하세요!", message: "", preferredStyle: .alert)
             self.present(alert, animated: true, completion: nil)
             DispatchQueue.main.asyncAfter(deadline: .now()+1.0)
             {
                 alert.dismiss(animated: true, completion: nil)
             }
         }
-        else if selectLineButton.titleLabel?.text == "노선을 선택하세요..."
+        else if selectLineButton.titleLabel?.text == "도착역을 선택하세요..."
         {
-            let alert = UIAlertController(title: "노선을 선택하세요!", message: "", preferredStyle: .alert)
+            let alert = UIAlertController(title: "도착역을 선택하세요!", message: "", preferredStyle: .alert)
             self.present(alert, animated: true, completion: nil)
             DispatchQueue.main.asyncAfter(deadline: .now()+1.0)
             {
@@ -248,6 +248,7 @@ class BusViewController: UIViewController, UISearchBarDelegate
                         vc.lineNo = self.dropDown.selectedItem
                         vc.destination = self.lineDropDown.selectedItem
                         vc.prevStation = self.prevStationSwitch.isOn==true ? "true":"false"
+                        vc.isSubway = false
                         let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                         if let window = scene?.windows.first
                         {
@@ -300,7 +301,7 @@ class BusViewController: UIViewController, UISearchBarDelegate
         selectLineButton.isUserInteractionEnabled = false
         selectLineButton.backgroundColor = .lightGray
         selectLineButton.setTitleColor(.white, for: .normal)
-        selectLineButton.setTitle("도착 역을 선택하세요...", for: .normal)
+        selectLineButton.setTitle("버스 노선을 선택하세요...", for: .normal)
 
         filteredData = searchText.isEmpty ? data : data.filter({ (dat) -> Bool in
             dat.range(of: searchText, options: .caseInsensitive) != nil

@@ -35,9 +35,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
+        let rightButtonItem = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: nil)
+        rightButtonItem.tintColor = .white
+        self.navigationItem.rightBarButtonItem = rightButtonItem
         self.navigationController?.view.backgroundColor = .clear
-        
-        
     }
     
     func update()
@@ -71,13 +72,15 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
         var lineNo = ""
         var destination = ""
         var prevStation = ""
+        var isSubway = true
         var str = ""
         if index >= (subwayAlarms?.count)!
         {
             lineNo = self.busAlarms![index-(subwayAlarms?.count)!].destination!
             destination = self.busAlarms![index-(subwayAlarms?.count)!].line!
             prevStation = self.busAlarms![index-(subwayAlarms?.count)!].prevStation!
-            str = "\(destination)번 버스 \(lineNo)역이 도착역인 알람을 설정하겠습니까?"
+            isSubway = false
+            str = "\(lineNo)번 버스 \(destination)역이 도착역인 알람을 설정하겠습니까?"
         }
         else
         {
@@ -93,6 +96,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
             vc.lineNo = lineNo
             vc.destination = destination
             vc.prevStation = prevStation
+            vc.isSubway = isSubway
             let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
             if let window = scene?.windows.first
             {
@@ -185,7 +189,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
             do
             {
                 try realm?.write({
-                    realm?.delete(subwayAlarms![indexPath.row])
+                    if indexPath.section == 1
+                    {
+                        realm?.delete(subwayAlarms![indexPath.row])
+                    }
+                    else if indexPath.section == 2
+                    {
+                        realm?.delete(busAlarms![indexPath.row])
+                    }
                 })
             }
             catch let error

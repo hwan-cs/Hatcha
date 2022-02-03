@@ -32,6 +32,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     var destination: String?
     var lineNo: String?
     var prevStation: String?
+    var isSubway: Bool?
     var SRResult = [String]()
     
     var timer: Timer?
@@ -41,6 +42,9 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     var containsSpeech: Bool = false
     
     var manager = LocalNotificationManager()
+    
+    var stationsForLineNo: [String]?
+    var indexOfDestination: Int?
     
     override func viewDidLoad()
     {
@@ -63,10 +67,20 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         speechRecognizer.delegate = self
         requestPermission()
         
+        if isSubway == true
+        {
+            stationsForLineNo = Subway.stations[self.lineNo!]!
+            indexOfDestination = stationsForLineNo!.firstIndex(of: self.destination!)!
+        }
+        else
+        {
+            stationsForLineNo = findStationsForBus(self.lineNo!)
+            indexOfDestination = stationsForLineNo!.firstIndex(of: self.destination!)!
+        }
+        
 //        let audioURL = Bundle.main.url(forResource: "audiotest", withExtension: "m4a")
         do
         {
-//            let audioFile = try AVAudioFile(forReading: audioURL!)
             // Configure the audio session for the app.
             let audioSession = AVAudioSession.sharedInstance()
             try audioSession.setCategory(.playAndRecord, mode: .measurement, options: [.allowBluetoothA2DP, .mixWithOthers])
@@ -235,10 +249,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     
     func determineStation(_ transcription: String)
     {
-        let stationsForLineNo = Subway.stations[self.lineNo!]!
-        let indexOfDestination = stationsForLineNo.firstIndex(of: self.destination!)!
-        
-        for station in stationsForLineNo
+        for station in stationsForLineNo!
         {
             if transcription.filter({!$0.isWhitespace}).contains(station) && SRResult.isEmpty
             {
@@ -250,6 +261,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             currentStationLabel.text = "이번 역: \(SRResult[0])"
             if SRResult[0] == destination
             {
+                print("arrived")
                 self.task.finish()
                 self.task.cancel()
                 self.task = nil
@@ -259,9 +271,13 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
                 self.timer?.invalidate()
                 self.timer = nil
                 
-                let arrivalNotification = Notification(destination: self.destination!, title: "핫챠 도착 알림", body: "\(self.destination!)역에 도착했습니다!")
+                let arrivalNotification = Notification(destination: self.destination!, title: "핫차 도착 알림", body: "\(self.destination!)역에 도착했습니다!")
                 self.manager.notifications.append(arrivalNotification)
                 self.manager.schedule()
+                
+                let utterance = AVSpeechUtterance(string: "\(self.destination!)역에 도착했습니다!")
+                let synth = AVSpeechSynthesizer()
+                synth.speak(utterance)
                 
                 let alert = UIAlertController(title: "\(self.destination!)역에 도착했습니다!", message: "", preferredStyle: .alert)
                 self.present(alert, animated: true, completion: nil)
@@ -271,21 +287,20 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
                 }
                 DispatchQueue.main.async
                 {
-                    for i in 0..<5
+                    for _ in 0..<5
                     {
                         AudioServicesPlaySystemSound(kSystemSoundID_Vibrate)
                         sleep(1)
                     }
                 }
                 let vc = UIStoryboard.init(name: "Main", bundle: Bundle.main).instantiateViewController(withIdentifier: "MainViewController")
-                let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                 if let window = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first
                 {
                     window.rootViewController = vc
                     UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
                 }
             }
-            else if (SRResult[0] == stationsForLineNo[indexOfDestination-1] || SRResult[0] == stationsForLineNo[indexOfDestination+1]) && (prevStation == "true")
+            else if (SRResult[0] == stationsForLineNo![indexOfDestination!-1] || SRResult[0] == stationsForLineNo![indexOfDestination!+1]) && (prevStation == "true")
             {
                 DispatchQueue.main.async
                 {
@@ -297,13 +312,56 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
                 }
                 if self.manager.notifications.isEmpty == true
                 {
-                    let previousStationArrivalNotification = Notification(destination: SRResult[0], title: "핫챠 도착 알림", body: "\(SRResult[0])역에 도착했습니다! 다음 역에 목적지에 도착합니다.")
+                    let previousStationArrivalNotification = Notification(destination: SRResult[0], title: "핫차 도착 알림", body: "\(SRResult[0])역에 도착했습니다! 다음 역에 목적지에 도착합니다.")
                     self.manager.notifications.append(previousStationArrivalNotification)
                     self.manager.schedule()
                 }
             }
             SRResult = [String]()
         }
+    }
+    
+    func findStationsForBus(_ bus: String) -> [String]
+    {
+        var result = [String]()
+        do
+        {
+            let path = Bundle.main.path(forResource: "seoul_bus_stations", ofType: "txt")
+            let contents = try String(contentsOfFile: path!)
+            let indexOfBus = contents.index(of: bus)!
+            let substr = contents[indexOfBus...]
+            let start = substr.firstIndex(of: "[")!
+            let end = substr.firstIndex(of: "]")!
+            let busStations = substr[start...end]
+            
+            var flag = false
+            var str = ""
+            for ch in busStations
+            {
+                if ch == "\"" && flag == false
+                {
+                    flag = true
+                }
+                else if ch == "\"" && flag == true
+                {
+                    flag = false
+                }
+                if flag == true && (ch != "[" && ch != "]" && ch != "," && ch != " " && ch != "\"")
+                {
+                    str.append(ch)
+                }
+                else if flag == false && ch == "\""
+                {
+                    result.append(str)
+                    str = ""
+                }
+            }
+        }
+        catch let error
+        {
+            print(error.localizedDescription)
+        }
+        return result
     }
     
     func startSpeechRecognition()

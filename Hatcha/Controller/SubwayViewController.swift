@@ -193,6 +193,7 @@ class SubwayViewController: UIViewController, UISearchBarDelegate
                         vc.lineNo = self.lineDropDown.selectedItem
                         vc.destination = self.dropDown.selectedItem
                         vc.prevStation = self.prevStationSwitch.isOn==true ? "true":"false"
+                        vc.isSubway = true
                         let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene
                         if let window = scene?.windows.first
                         {

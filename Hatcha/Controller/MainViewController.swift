@@ -18,6 +18,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
     var subwayAlarms: Results<SubwayAlarmData>?
     var busAlarms: Results<BusAlarmData>?
     
+    let infoImageView = UIImageView(frame: CGRect(x: 80, y: 50, width: 240, height: 240))
+    let pageControl = UIPageControl(frame: CGRect(x: 70, y: 310, width: 270, height: 40))
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -35,10 +38,20 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
-        let rightButtonItem = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: nil)
+        let rightButtonItem = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(showInfoGallery))
         rightButtonItem.tintColor = .white
         self.navigationItem.rightBarButtonItem = rightButtonItem
         self.navigationController?.view.backgroundColor = .clear
+        
+        infoImageView.isUserInteractionEnabled = true
+        
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(getSwipeAction(_:)))
+        swipeLeft.direction = UISwipeGestureRecognizer.Direction.left
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(getSwipeAction(_:)))
+        swipeRight.direction = UISwipeGestureRecognizer.Direction.right
+        
+        self.infoImageView.addGestureRecognizer(swipeLeft)
+        self.infoImageView.addGestureRecognizer(swipeRight)
     }
     
     func update()
@@ -208,6 +221,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
         }
         return UISwipeActionsConfiguration(actions: [delete])
     }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         if indexPath.section == 1
@@ -245,8 +259,67 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
         let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MyTableViewCell
         return cell
     }
+    
+    @objc func showInfoGallery()
+    {
+        let showAlert = UIAlertController(title: "Demo Alert", message: nil, preferredStyle: .alert)
+        let alertHeight = NSLayoutConstraint(item: showAlert.view!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 400)
+        let alertWidth = NSLayoutConstraint(item: showAlert.view!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 400)
+        showAlert.view.addConstraint(alertHeight)
+        showAlert.view.addConstraint(alertWidth)
+        infoImageView.image = UIImage(named: "green_bus.png")
+        showAlert.view.addSubview(infoImageView)
+        let action = UIAlertAction(title: "확인", style: .default)
+        { (action) in
+            self.dismiss(animated: true, completion: nil)
+        }
+        showAlert.addAction(action)
+        
+        pageControl.numberOfPages = 4
+        pageControl.currentPageIndicatorTintColor = UIColor.orange
+        pageControl.pageIndicatorTintColor = UIColor.lightGray.withAlphaComponent(0.8)
+        
+        showAlert.view.addSubview(pageControl)
+        self.present(showAlert, animated: true, completion: nil)
+    }
+    
+    func pageControlValueChanged()
+    {
+        let rand = CGFloat.random(in: 0.0...1.0)
+        if rand <= 0.25
+        {
+            infoImageView.image = UIImage(named: "yellow_bus.png")
+        }
+        else if rand <= 0.5
+        {
+            infoImageView.image = UIImage(named: "blue_bus.png")
+        }
+        else if rand <= 0.75
+        {
+            infoImageView.image = UIImage(named: "green_bus.png")
+        }
+        else if rand <= 1.0
+        {
+            infoImageView.image = UIImage(named: "red_bus.png")
+        }
+    }
+    
+    @objc func getSwipeAction( _ recognizer : UISwipeGestureRecognizer)
+    {
+        if recognizer.direction == .right
+        {
+            pageControl.currentPage -= 1
+            pageControlValueChanged()
+            print("Left Swiped")
+        }
+        else if recognizer.direction == .left
+        {
+            pageControl.currentPage += 1
+            pageControlValueChanged()
+            print("Right Swiped")
+        }
+    }
 }
-
 
 extension MainViewController: UITableViewDataSource
 {
@@ -294,6 +367,5 @@ extension MainViewController: UITableViewDataSource
     {
         return 3
     }
-    
 }
 

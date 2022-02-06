@@ -130,7 +130,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             self.startSpeechRecognition()
             timer = Timer.scheduledTimer(withTimeInterval: 10.0, repeats: true)
             { timer in
-                print("Timer triggered")
+                print("Timer triggered, speechdetected:\(self.speechDetected)")
                 self.changeButtonStatus()
                 if self.containsSpeech == false
                 {
@@ -208,6 +208,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         }
         else
         {
+            print("hello \(self.didPlay)")
             if self.didPlay == true
             {
                 self.containsSpeech = false

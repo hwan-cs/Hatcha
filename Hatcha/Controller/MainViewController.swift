@@ -235,7 +235,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
             }
             let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MyTableViewCell
             cell.setAlarmButton.tag = indexPath.row
-            cell.titleLabel.attributedText = NSAttributedString(string: "\(self.subwayAlarms![indexPath.row].destination!), \(self.subwayAlarms![indexPath.row].line!)", attributes: [ .font: UIFont.systemFont(ofSize: 18.0, weight: .semibold), .foregroundColor: UIColor.white ])
+            var fgColor = UIColor.white
+            if self.subwayAlarms![indexPath.row].prevStation == "true"
+            {
+                fgColor = UIColor.systemGreen
+            }
+            cell.titleLabel.attributedText = NSAttributedString(string: "\(self.subwayAlarms![indexPath.row].destination!), \(self.subwayAlarms![indexPath.row].line!)", attributes: [ .font: UIFont.systemFont(ofSize: 18.0, weight: .semibold), .foregroundColor: fgColor ])
             cell.setAlarmButton.addTarget(self, action: #selector(setAlarmTapped(sender:)), for: .touchUpInside)
             cell.selectionStyle = .none
             return cell
@@ -251,7 +256,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
             }
             let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MyTableViewCell
             cell.setAlarmButton.tag = indexPath.row + (subwayAlarms?.count)!
-            cell.titleLabel.attributedText = NSAttributedString(string: "\(self.busAlarms![indexPath.row].destination!), \(self.busAlarms![indexPath.row].line!)", attributes: [ .font: UIFont.systemFont(ofSize: 18.0, weight: .semibold), .foregroundColor: UIColor.white ])
+            var fgColor = UIColor.white
+            if self.busAlarms![indexPath.row].prevStation == "true"
+            {
+                fgColor = UIColor.systemBlue
+            }
+            cell.titleLabel.attributedText = NSAttributedString(string: "\(self.busAlarms![indexPath.row].destination!), \(self.busAlarms![indexPath.row].line!)", attributes: [ .font: UIFont.systemFont(ofSize: 18.0, weight: .semibold), .foregroundColor: fgColor ])
             cell.setAlarmButton.addTarget(self, action: #selector(setAlarmTapped(sender:)), for: .touchUpInside)
             cell.selectionStyle = .none
             return cell

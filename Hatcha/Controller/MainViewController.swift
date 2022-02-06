@@ -18,8 +18,15 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
     var subwayAlarms: Results<SubwayAlarmData>?
     var busAlarms: Results<BusAlarmData>?
     
-    let infoImageView = UIImageView(frame: CGRect(x: 80, y: 50, width: 240, height: 240))
-    let pageControl = UIPageControl(frame: CGRect(x: 70, y: 310, width: 270, height: 40))
+    let showAlert = UIAlertController(title: nil, message: nil, preferredStyle: .alert)
+    let infoImageView = UIImageView(frame: CGRect(x: 80, y: 80, width: 240, height: 360))
+    let pageControl = UIPageControl(frame: CGRect(x: 70, y: 440, width: 270, height: 40))
+    let infoPageImg = [UIImage(named: "info1.png")!, UIImage(named: "info2.png")!, UIImage(named: "info3.png")!]
+    let infoPageTitle = ["스와이프를 하여 알람을 삭제할 수 있습니다", "알람 사용 중 핸드폰을 가방에 넣지 말아주세요!", "음성이 인식되면 안내방송으로 간주하고 버튼이 켜집니다!"]
+    
+    let animationDuration: TimeInterval = 0.25
+    let switchingInterval: TimeInterval = 3
+    var transition = CATransition()
     
     override func viewDidLoad()
     {
@@ -272,12 +279,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
     
     @objc func showInfoGallery()
     {
-        let showAlert = UIAlertController(title: "Demo Alert", message: nil, preferredStyle: .alert)
-        let alertHeight = NSLayoutConstraint(item: showAlert.view!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 400)
+        showAlert.title = "스와이프를 하여 알람을 삭제할 수 있습니다"
+        let alertHeight = NSLayoutConstraint(item: showAlert.view!, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 520)
         let alertWidth = NSLayoutConstraint(item: showAlert.view!, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 400)
         showAlert.view.addConstraint(alertHeight)
         showAlert.view.addConstraint(alertWidth)
-        infoImageView.image = UIImage(named: "green_bus.png")
+        infoImageView.image = UIImage(named: "info1.png")
         showAlert.view.addSubview(infoImageView)
         let action = UIAlertAction(title: "확인", style: .default)
         { (action) in
@@ -285,33 +292,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
         }
         showAlert.addAction(action)
         
-        pageControl.numberOfPages = 4
-        pageControl.currentPageIndicatorTintColor = UIColor.orange
+        pageControl.numberOfPages = 3
+        pageControl.currentPageIndicatorTintColor = UIColor.black
         pageControl.pageIndicatorTintColor = UIColor.lightGray.withAlphaComponent(0.8)
         
         showAlert.view.addSubview(pageControl)
         self.present(showAlert, animated: true, completion: nil)
-    }
-    
-    func pageControlValueChanged()
-    {
-        let rand = CGFloat.random(in: 0.0...1.0)
-        if rand <= 0.25
-        {
-            infoImageView.image = UIImage(named: "yellow_bus.png")
-        }
-        else if rand <= 0.5
-        {
-            infoImageView.image = UIImage(named: "blue_bus.png")
-        }
-        else if rand <= 0.75
-        {
-            infoImageView.image = UIImage(named: "green_bus.png")
-        }
-        else if rand <= 1.0
-        {
-            infoImageView.image = UIImage(named: "red_bus.png")
-        }
     }
     
     @objc func getSwipeAction( _ recognizer : UISwipeGestureRecognizer)
@@ -319,15 +305,29 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
         if recognizer.direction == .right
         {
             pageControl.currentPage -= 1
-            pageControlValueChanged()
             print("Left Swiped")
         }
         else if recognizer.direction == .left
         {
             pageControl.currentPage += 1
-            pageControlValueChanged()
             print("Right Swiped")
         }
+        animateImageView()
+        infoImageView.image = infoPageImg[pageControl.currentPage]
+        showAlert.title = infoPageTitle[pageControl.currentPage]
+    }
+    
+    func animateImageView()
+    {
+        CATransaction.begin() //Begin the CATransaction
+
+        CATransaction.setAnimationDuration(animationDuration)
+
+        transition.type = CATransitionType.fade
+        transition.subtype = CATransitionSubtype.fromRight
+
+        infoImageView.layer.add(transition, forKey: kCATransition)
+        CATransaction.commit()
     }
 }
 

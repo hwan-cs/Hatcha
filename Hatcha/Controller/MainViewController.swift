@@ -59,6 +59,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
         
         self.infoImageView.addGestureRecognizer(swipeLeft)
         self.infoImageView.addGestureRecognizer(swipeRight)
+        
+        let action = UIAlertAction(title: "확인", style: .default)
+        { (action) in
+            self.dismiss(animated: true, completion: nil)
+        }
+        showAlert.addAction(action)
     }
     
     func update()
@@ -205,6 +211,20 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
     }
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration?
     {
+        if indexPath.section == 1
+        {
+            if subwayAlarms?.count == 0
+            {
+                return nil
+            }
+        }
+        else if indexPath.section == 2
+        {
+            if busAlarms?.count == 0
+            {
+                return nil
+            }
+        }
         let delete = UIContextualAction(style: .destructive, title: "삭제") { [unowned self] action, view, completionHandler in
             do
             {
@@ -238,6 +258,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
                 print("no cell")
                 let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
                 cell.textLabel?.attributedText = NSAttributedString(string: "알람 없음", attributes: [ .font: UIFont.systemFont(ofSize: 22.0, weight: .semibold), .foregroundColor: UIColor.white ])
+                cell.selectionStyle = .none
                 return cell
             }
             let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MyTableViewCell
@@ -259,6 +280,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
                 print("no cell")
                 let cell = tableView.dequeueReusableCell(withIdentifier: "cell")!
                 cell.textLabel?.attributedText = NSAttributedString(string: "알람 없음", attributes: [ .font: UIFont.systemFont(ofSize: 22.0, weight: .semibold), .foregroundColor: UIColor.white ])
+                cell.selectionStyle = .none
                 return cell
             }
             let cell = tableView.dequeueReusableCell(withIdentifier: K.cellIdentifier, for: indexPath) as! MyTableViewCell
@@ -277,6 +299,25 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
         return cell
     }
     
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath?
+    {
+        if indexPath.section == 1
+        {
+            if subwayAlarms?.count == 0
+            {
+                return nil
+            }
+        }
+        else if indexPath.section == 2
+        {
+            if busAlarms?.count == 0
+            {
+                return nil
+            }
+        }
+        return indexPath
+    }
+    
     @objc func showInfoGallery()
     {
         showAlert.title = "스와이프를 하여 알람을 삭제할 수 있습니다"
@@ -286,12 +327,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
         showAlert.view.addConstraint(alertWidth)
         infoImageView.image = UIImage(named: "info1.png")
         showAlert.view.addSubview(infoImageView)
-        let action = UIAlertAction(title: "확인", style: .default)
-        { (action) in
-            self.dismiss(animated: true, completion: nil)
-        }
-        showAlert.addAction(action)
-        
+    
         pageControl.numberOfPages = 3
         pageControl.currentPageIndicatorTintColor = UIColor.black
         pageControl.pageIndicatorTintColor = UIColor.lightGray.withAlphaComponent(0.8)
@@ -305,12 +341,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
         if recognizer.direction == .right
         {
             pageControl.currentPage -= 1
-            print("Left Swiped")
         }
         else if recognizer.direction == .left
         {
             pageControl.currentPage += 1
-            print("Right Swiped")
         }
         animateImageView()
         infoImageView.image = infoPageImg[pageControl.currentPage]

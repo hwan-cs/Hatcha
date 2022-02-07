@@ -9,7 +9,6 @@ import UIKit
 import Speech
 import AudioKit
 import CoreAudioKit
-import Accelerate
 import AudioToolbox
 
 class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeechRecognitionTaskDelegate

@@ -31,7 +31,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        print("viewdidload")
         view.backgroundColor = .black
         tableView.separatorStyle = .none
         tableView.register(UINib(nibName: K.cellNibName, bundle: nil), forCellReuseIdentifier: K.cellIdentifier)

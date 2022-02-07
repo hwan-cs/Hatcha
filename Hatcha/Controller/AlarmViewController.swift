@@ -388,7 +388,6 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         {
             print("Device doesn't support speech recognition")
         }
-        print("done")
     }
     
     func speechRecognitionDidDetectSpeech(_ task: SFSpeechRecognitionTask)

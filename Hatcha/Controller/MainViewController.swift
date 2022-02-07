@@ -68,7 +68,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
     
     func update()
     {
-        self.tableView.reloadData()
+        print("update")
+        loadAlarms()
+        print("after loadalarms")
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
@@ -81,6 +83,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
     override func viewWillAppear(_ animated: Bool)
     {
         self.navigationController?.navigationBar.barStyle = .black
+        subwayAlarms = realm!.objects(SubwayAlarmData.self)
+        busAlarms = realm!.objects(BusAlarmData.self)
         tableView.reloadData()
     }
     
@@ -231,10 +235,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
                     if indexPath.section == 1
                     {
                         realm?.delete(subwayAlarms![indexPath.row])
+                        tableView.reloadSections([1], with: .fade)
                     }
                     else if indexPath.section == 2
                     {
                         realm?.delete(busAlarms![indexPath.row])
+                        tableView.reloadSections([2], with: .fade)
                     }
                 })
             }
@@ -242,7 +248,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
             {
                 print(error.localizedDescription)
             }
-            tableView.deleteRows(at: [indexPath], with: .fade)
             completionHandler(true)
         }
         return UISwipeActionsConfiguration(actions: [delete])
@@ -269,6 +274,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
             }
             cell.titleLabel.attributedText = NSAttributedString(string: "\(self.subwayAlarms![indexPath.row].destination!), \(self.subwayAlarms![indexPath.row].line!)", attributes: [ .font: UIFont.systemFont(ofSize: 18.0, weight: .semibold), .foregroundColor: fgColor ])
             cell.setAlarmButton.addTarget(self, action: #selector(setAlarmTapped(sender:)), for: .touchUpInside)
+            cell.titleLabel.adjustsFontSizeToFitWidth = true
             cell.selectionStyle = .none
             return cell
         }
@@ -290,6 +296,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UpdateTVDelegat
                 fgColor = UIColor.systemBlue
             }
             cell.titleLabel.attributedText = NSAttributedString(string: "\(self.busAlarms![indexPath.row].destination!), \(self.busAlarms![indexPath.row].line!)", attributes: [ .font: UIFont.systemFont(ofSize: 18.0, weight: .semibold), .foregroundColor: fgColor ])
+            cell.titleLabel.adjustsFontSizeToFitWidth = true
             cell.setAlarmButton.addTarget(self, action: #selector(setAlarmTapped(sender:)), for: .touchUpInside)
             cell.selectionStyle = .none
             return cell

@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SYq-D6-aTC">
-                        <rect key="frame" x="16" y="16" width="41.5" height="33"/>
+                        <rect key="frame" x="16" y="16" width="210" height="33"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
@@ -45,6 +45,7 @@
                     <constraint firstItem="SYq-D6-aTC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="CIU-SR-LPX"/>
                     <constraint firstAttribute="trailing" secondItem="ZPT-Rq-Y7Y" secondAttribute="trailing" constant="16" id="Jrg-W5-RxD"/>
                     <constraint firstItem="ZPT-Rq-Y7Y" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="TdJ-nY-3Fq"/>
+                    <constraint firstItem="ZPT-Rq-Y7Y" firstAttribute="leading" secondItem="SYq-D6-aTC" secondAttribute="trailing" constant="8" id="vY6-Tp-2eW"/>
                     <constraint firstAttribute="bottom" secondItem="SYq-D6-aTC" secondAttribute="bottom" constant="16" id="whQ-yJ-OuG"/>
                     <constraint firstItem="SYq-D6-aTC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="yVR-Xc-TeA"/>
                 </constraints>

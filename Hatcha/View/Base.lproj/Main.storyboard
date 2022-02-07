@@ -450,6 +450,7 @@
                                         </buttonConfiguration>
                                         <connections>
                                             <action selector="selectLineButtonAction:" destination="8jk-jK-QDN" eventType="touchUpInside" id="7h5-6R-LXl"/>
+                                            <action selector="selectLineButtonAction:" destination="rd0-GU-eN0" eventType="touchUpInside" id="zdQ-8R-zIf"/>
                                         </connections>
                                     </button>
                                 </subviews>

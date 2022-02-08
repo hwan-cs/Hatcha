@@ -199,9 +199,9 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         {
             if self.didPlay == false
             {
+                print("Button activated")
                 self.listenButtonImageView.isUserInteractionEnabled = true
                 self.listenButtonImageView.tintColor = .white
-                self.shouldStopRecording = true
                 self.containsSpeech = true
             }
         }
@@ -210,11 +210,17 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             print("hello \(self.didPlay)")
             if self.didPlay == true
             {
+                print("Button deactivated")
                 self.containsSpeech = false
                 self.didPlay = false
                 self.listenButtonImageView.isUserInteractionEnabled = false
                 self.listenButtonImageView.tintColor = .lightGray
                 self.shouldStopRecording = false
+            }
+            else if self.didPlay == false
+            {
+                self.containsSpeech = false
+                self.shouldStopRecording = true
             }
         }
         self.speechDetected = false
@@ -261,10 +267,12 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             currentStationLabel.text = "이번 역: \(SRResult[0])"
             if SRResult[0] == destination
             {
-                print("arrived")
-                self.task.finish()
-                self.task.cancel()
-                self.task = nil
+                if task != nil
+                {
+                    self.task.finish()
+                    self.task.cancel()
+                    self.task = nil
+                }
                 self.request.endAudio()
                 self.audioEngine.stop()
                 self.audioEngine.inputNode.removeTap(onBus: 0)
@@ -382,6 +390,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
                 print("result: \(result.bestTranscription.formattedString)")
                 self.determineStation(result.bestTranscription.formattedString)
                 self.speechDetected = true
+                self.shouldStopRecording = false
             })
         }
         else
@@ -400,17 +409,6 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         print("pressed")
         self.didPlay = true
         self.audioFilePlayer.play()
-    }
-    
-    func cancelSpeechRecognition()
-    {
-        task.finish()
-        task.cancel()
-        task = nil
-        
-        request.endAudio()
-        audioEngine.stop()
-        audioEngine.inputNode.removeTap(onBus: 0)
     }
     
     func alertView(_ message: String)

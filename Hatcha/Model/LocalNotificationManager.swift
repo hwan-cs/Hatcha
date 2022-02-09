@@ -13,7 +13,6 @@ struct Notification
     var destination: String
     var title: String
     var body: String
-    //static var pushNotificationOn: Bool = UserDefaults.standard.bool(forKey: "prefs_is_push_notification_on")
 }
 
 class LocalNotificationManager

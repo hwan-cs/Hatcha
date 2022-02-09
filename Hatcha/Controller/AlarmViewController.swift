@@ -144,11 +144,6 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         }
     }
     
-    override func viewWillAppear(_ animated: Bool)
-    {
-
-    }
-    
     override var preferredStatusBarStyle: UIStatusBarStyle
     {
         return .lightContent
@@ -169,9 +164,12 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
         let alert = UIAlertController(title: "알람을 멈추시겠습니까?", message: "", preferredStyle: .alert)
         let action = UIAlertAction(title: "예", style: .default)
         { (action) in
-            self.task.finish()
-            self.task.cancel()
-            self.task = nil
+            if self.task != nil
+            {
+                self.task.finish()
+                self.task.cancel()
+                self.task = nil
+            }
             self.request.endAudio()
             self.audioEngine.stop()
             self.audioEngine.inputNode.removeTap(onBus: 0)
@@ -406,7 +404,6 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     
     @objc func listenButtonAction(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        print("pressed")
         self.didPlay = true
         self.audioFilePlayer.play()
     }

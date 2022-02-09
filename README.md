@@ -33,3 +33,5 @@
 | 알람 활성화 상태 화면  | 전 역 도착 알림 |  목적지 도착 알림 |
 | ------------- | ------------- | ------------- |
 | ![alt text](https://user-images.githubusercontent.com/68496759/153042007-f18e491d-2ad1-4d35-88b6-bf4718c9d02a.png)  | ![alt text](https://user-images.githubusercontent.com/68496759/153044247-9aeb3e68-c7d4-4398-8625-f9c0655e9048.png)  | ![alt text](https://user-images.githubusercontent.com/68496759/153044282-8d65ddab-be5a-48b2-8098-ca0db619a22a.png)  |
+
+Skills Used: MVC, AudioKit, SpeechRecognition, LocalNotification, Realm, Delegate Pattern

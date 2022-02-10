@@ -17,7 +17,7 @@
 핫차는 아래의 라이브러리들을 사용합니다:
 - DropDown - 드롭다운 라이브러리
 - Realm - 데이터베이스
-- AudioKit (AVAudioEngine, AVAudioPlayerNode, AVAudioUnitEQ, AVAudioSession) - 마이크 녹음 및 오디오 변환
+- AVFoundation (AVAudioEngine, AVAudioPlayerNode, AVAudioUnitEQ, AVAudioSession) - 마이크 녹음 및 오디오 변환
 - Speech - 음성인식 라이브러리
 
 ## 실행 화면 📱
@@ -34,4 +34,4 @@
 | ------------- | ------------- | ------------- |
 | ![alt text](https://user-images.githubusercontent.com/68496759/153042007-f18e491d-2ad1-4d35-88b6-bf4718c9d02a.png)  | ![alt text](https://user-images.githubusercontent.com/68496759/153044247-9aeb3e68-c7d4-4398-8625-f9c0655e9048.png)  | ![alt text](https://user-images.githubusercontent.com/68496759/153044282-8d65ddab-be5a-48b2-8098-ca0db619a22a.png)  |
 
-Skills Used: MVC, AudioKit, SpeechRecognition, LocalNotification, Realm, Delegate Pattern
+Skills Used: MVC, AVFoundationAudio, SpeechRecognition, LocalNotification, Realm, Delegate Pattern

@@ -34,4 +34,6 @@
 | ------------- | ------------- | ------------- |
 | ![alt text](https://user-images.githubusercontent.com/68496759/153042007-f18e491d-2ad1-4d35-88b6-bf4718c9d02a.png)  | ![alt text](https://user-images.githubusercontent.com/68496759/153044247-9aeb3e68-c7d4-4398-8625-f9c0655e9048.png)  | ![alt text](https://user-images.githubusercontent.com/68496759/153044282-8d65ddab-be5a-48b2-8098-ca0db619a22a.png)  |
 
+핫차 프로젝트를 마치며: https://www.notion.so/3a6b4e3bda204216bf71062d76350615
+
 Skills Used: MVC, AVFoundationAudio, SpeechRecognition, LocalNotification, Realm, Delegate Pattern

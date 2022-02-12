@@ -7,9 +7,8 @@
 
 import UIKit
 import Speech
-import AudioKit
-import CoreAudioKit
 import AudioToolbox
+import SoundAnalysis
 
 class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeechRecognitionTaskDelegate
 {
@@ -44,6 +43,8 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
     
     var stationsForLineNo: [String]?
     var indexOfDestination: Int?
+    
+    let resultObserver = ResultsObserver()
     
     override func viewDidLoad()
     {
@@ -107,18 +108,39 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             audioEngine.connect(equalizer, to: audioEngine.outputNode, format: inputNode.outputFormat(forBus: 0))
 
             audioEngine.prepare()
+            
+            let version1 = SNClassifierIdentifier.version1
+            //let request = try SNClassifySoundRequest(classifierIdentifier: version1)
+            let defaultConfig = MLModelConfiguration()
+            let subwaySoundClassifier = try SubwaySoundClassifier(configuration: defaultConfig)
+            let classifySoundRequest = try SNClassifySoundRequest(mlModel: subwaySoundClassifier.model)
+            
             let recordingFormat = inputNode.outputFormat(forBus: 0)
+            
+            let streamAnalyzer = SNAudioStreamAnalyzer(format: inputNode.inputFormat(forBus: 0))
+            try streamAnalyzer.add(classifySoundRequest, withObserver: resultObserver)
+            let analysisQueue = DispatchQueue(label: "com.example.AnalysisQueue")
+            
             inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat)
             { (buffer: AVAudioPCMBuffer, when: AVAudioTime) in
-                for i in 0..<Int(buffer.frameCapacity)
+                analysisQueue.async
                 {
-                    buffer.floatChannelData?.pointee[i] = (buffer.floatChannelData?.pointee[i])! * 500.0
+                    streamAnalyzer.analyze(buffer, atAudioFramePosition: when.sampleTime)
+                    if self.resultObserver.isAnnouncement == true
+                    {
+                        print("appended")
+                        for i in 0..<Int(buffer.frameCapacity)
+                        {
+                            buffer.floatChannelData?.pointee[i] = (buffer.floatChannelData?.pointee[i])! * 500.0
+                        }
+                        self.request.append(buffer)
+                        self.audioFilePlayer.scheduleBuffer(buffer, completionHandler: nil)
+                    }
                 }
-                self.request.append(buffer)
-                if self.shouldStopRecording == false
-                {
-                    self.audioFilePlayer.scheduleBuffer(buffer, completionHandler: nil)
-                }
+//                if self.shouldStopRecording == false
+//                {
+//                    self.audioFilePlayer.scheduleBuffer(buffer, completionHandler: nil)
+//                }
             }
             try audioEngine.start()
             
@@ -131,10 +153,10 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             { timer in
                 print("Timer triggered, speechdetected:\(self.speechDetected)")
                 self.changeButtonStatus()
-                if self.containsSpeech == false
-                {
-                    self.audioFilePlayer.stop()
-                }
+//                if self.containsSpeech == false
+//                {
+//                    self.audioFilePlayer.stop()
+//                }
             }
             print(self.speechDetected)
         }

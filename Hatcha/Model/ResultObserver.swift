@@ -25,14 +25,14 @@ class ResultsObserver: NSObject, SNResultsObserving
 
         // Convert the time to a human-readable string.
         let formattedTime = String(format: "%.2f", timeInSeconds)
-        print("Analysis result for audio at time: \(formattedTime)")
+//        print("Analysis result for audio at time: \(formattedTime)")
 
         // Convert the confidence to a percentage string.
         let percent = classification.confidence * 100.0
         let percentString = String(format: "%.2f%%", percent)
 
         // Print the classification's name (label) with its confidence.
-        print("\(classification.identifier): \(percentString) confidence.\n")
+//        print("\(classification.identifier): \(percentString) confidence.\n")
         if classification.identifier == "Announcement"
         {
             isAnnouncement = true

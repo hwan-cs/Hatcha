@@ -16,6 +16,7 @@
 		1A36EB1927A7D4E100E6F507 /* Bus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A36EB1827A7D4E100E6F507 /* Bus.swift */; };
 		1A642BCF27B7DFE700151F85 /* SubwaySoundClassifier.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 1A642BCE27B7DFE600151F85 /* SubwaySoundClassifier.mlmodel */; };
 		1A642BD127B7E0F400151F85 /* ResultObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A642BD027B7E0F400151F85 /* ResultObserver.swift */; };
+		1A642BD427BAA29D00151F85 /* AudioKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1A642BD327BAA29D00151F85 /* AudioKit */; };
 		1A78EC47277EF05B00AEED90 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC46277EF05B00AEED90 /* AppDelegate.swift */; };
 		1A78EC4B277EF05B00AEED90 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A78EC4A277EF05B00AEED90 /* MainViewController.swift */; };
 		1A78EC4E277EF05B00AEED90 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A78EC4C277EF05B00AEED90 /* Main.storyboard */; };
@@ -80,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1A642BD427BAA29D00151F85 /* AudioKit in Frameworks */,
 				A9A76320FFF9BE417DD91590 /* Pods_Hatcha.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,6 +197,9 @@
 			dependencies = (
 			);
 			name = Hatcha;
+			packageProductDependencies = (
+				1A642BD327BAA29D00151F85 /* AudioKit */,
+			);
 			productName = Hatcha;
 			productReference = 1A78EC43277EF05B00AEED90 /* Hatcha.app */;
 			productType = "com.apple.product-type.application";
@@ -223,6 +228,9 @@
 				Base,
 			);
 			mainGroup = 1A78EC3A277EF05B00AEED90;
+			packageReferences = (
+				1A642BD227BAA29D00151F85 /* XCRemoteSwiftPackageReference "AudioKit" */,
+			);
 			productRefGroup = 1A78EC44277EF05B00AEED90 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -550,6 +558,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1A642BD227BAA29D00151F85 /* XCRemoteSwiftPackageReference "AudioKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AudioKit/AudioKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1A642BD327BAA29D00151F85 /* AudioKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A642BD227BAA29D00151F85 /* XCRemoteSwiftPackageReference "AudioKit" */;
+			productName = AudioKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1A78EC3B277EF05B00AEED90 /* Project object */;
 }

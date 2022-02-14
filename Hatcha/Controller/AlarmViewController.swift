@@ -7,6 +7,8 @@
 
 import UIKit
 import Speech
+import CoreAudioKit
+import AudioKit
 import AudioToolbox
 import SoundAnalysis
 
@@ -93,7 +95,7 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             
             //MARK: - Lowpass filter
             equalizer.bands[0].filterType = .lowPass
-            equalizer.bands[0].frequency = 1800
+            equalizer.bands[0].frequency = 800
             equalizer.bands[0].bypass = false
 
             //MARK: - Highpass filter
@@ -129,18 +131,13 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
                     if self.resultObserver.isAnnouncement == true
                     {
                         print("appended")
-                        for i in 0..<Int(buffer.frameCapacity)
+                        self.request.append(buffer.normalize()!)
+                        if self.shouldStopRecording == false
                         {
-                            buffer.floatChannelData?.pointee[i] = (buffer.floatChannelData?.pointee[i])! * 500.0
+                            self.audioFilePlayer.scheduleBuffer(buffer, completionHandler: nil)
                         }
-                        self.request.append(buffer)
-                        self.audioFilePlayer.scheduleBuffer(buffer, completionHandler: nil)
                     }
                 }
-//                if self.shouldStopRecording == false
-//                {
-//                    self.audioFilePlayer.scheduleBuffer(buffer, completionHandler: nil)
-//                }
             }
             try audioEngine.start()
             
@@ -153,10 +150,10 @@ class AlarmViewController: UIViewController, SFSpeechRecognizerDelegate, SFSpeec
             { timer in
                 print("Timer triggered, speechdetected:\(self.speechDetected)")
                 self.changeButtonStatus()
-//                if self.containsSpeech == false
-//                {
-//                    self.audioFilePlayer.stop()
-//                }
+                if self.containsSpeech == false
+                {
+                    self.audioFilePlayer.stop()
+                }
             }
             print(self.speechDetected)
         }
